@@ -1,0 +1,1 @@
+note all photos here are tested for largest display setting in Miscrits and on Windows 10 OS.
