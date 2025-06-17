@@ -1,6 +1,7 @@
 import pyautogui
 import time
 
+pyautogui.FAILSAFE = False
 
 class HumanMouse:
     @staticmethod
@@ -19,3 +20,8 @@ class HumanMouse:
         pyautogui.mouseUp()
         time.sleep(0.3)
         HumanMouse.random_move()
+
+    @staticmethod
+    def locate_on_screen(template_path, confidence=0.8):
+        location = pyautogui.locateCenterOnScreen(template_path, confidence=confidence)
+        return location

@@ -17,10 +17,6 @@ class MiscritsBot:
         self.plat_training = plat_training
         self.fight_info = FightInfo()
 
-    def locate_on_screen(self, template_path, confidence=0.8):
-        location = pyautogui.locateCenterOnScreen(template_path, confidence=confidence)
-        return location
-
     def look_for_target_until_found(self, target_path, confidence=0.8):
         count, stop = 0, 0
         while True:
@@ -31,7 +27,7 @@ class MiscritsBot:
                 HumanMouse.random_move()
                 time.sleep(0.2)
                 count = 0
-            target = self.locate_on_screen(target_path, confidence)
+            target = HumanMouse.locate_on_screen(target_path, confidence)
             if target:
                 print(target_path, "found!")
                 return target
@@ -45,15 +41,15 @@ class MiscritsBot:
         while True:
             crit_name = self.fight_info.get_crit_name()
             print(crit_name, "encountered!")
-            if crit_name and ("Da" in crit_name or "Pol" in crit_name):
+            if crit_name and ("Fe" not in crit_name and "Pe" not in crit_name and "C" not in crit_name):
                 print("⚠️ Dark Poltergust Encountered!")
                 for _ in range(300):
                     if self.notifier:
                         self.notifier.send_telegram("⚠️ Dark Poltergust Encountered!")
                     time.sleep(1)
 
-            my_turn = self.locate_on_screen(my_turn_path, confidence)
-            fight_complete = self.locate_on_screen(fight_complete_path, confidence)
+            my_turn = HumanMouse.locate_on_screen(my_turn_path, confidence)
+            fight_complete = HumanMouse.locate_on_screen(fight_complete_path, confidence)
             if my_turn:
                 print(my_turn_path, "found!")
                 return "my_turn", my_turn
@@ -66,8 +62,8 @@ class MiscritsBot:
 
     def look_for_fight_or_potion(self, fight_path, potion_path, confidence=0.8):
         while True:
-            fight = self.locate_on_screen(fight_path, confidence)
-            potion = self.locate_on_screen(potion_path, confidence)
+            fight = HumanMouse.locate_on_screen(fight_path, confidence)
+            potion = HumanMouse.locate_on_screen(potion_path, confidence)
             if fight:
                 print(fight_path, "found!")
                 return "fight", fight
@@ -79,7 +75,7 @@ class MiscritsBot:
                 time.sleep(1)
 
     def ready_to_train(self, image_path, confidence=0.8):
-        is_ready_to_train = self.locate_on_screen(image_path, confidence)
+        is_ready_to_train = HumanMouse.locate_on_screen(image_path, confidence)
         if is_ready_to_train:
             print("ready to train!")
             return True
@@ -105,7 +101,7 @@ class MiscritsBot:
 
         outcome, _ = self.look_for_fight_or_potion(self.fight_background, self.crit_ref)
         if outcome == "potion":
-            time.sleep(20)
+            time.sleep(17)
             return False
 
         while True:
@@ -145,7 +141,7 @@ class MiscritsBot:
                     time.sleep(1)
                     HumanMouse.click()
                     time.sleep(0.5)
-                    plat_train = self.locate_on_screen("photos/fight/common/plat_train.png")
+                    plat_train = HumanMouse.locate_on_screen("photos/fight/common/plat_train.png")
                     if plat_train:
                         HumanMouse.move_to(plat_train, 0, 0)
                         HumanMouse.click()
@@ -158,13 +154,13 @@ class MiscritsBot:
                 HumanMouse.click()
                 time.sleep(1)
 
-                if self.locate_on_screen("photos/fight/common/new_abilities.png"):
+                if HumanMouse.locate_on_screen("photos/fight/common/new_abilities.png"):
                     cont = self.look_for_target_until_found("photos/fight/common/abilities_continue.png")
                     HumanMouse.move_to(cont, 0, 0)
                     HumanMouse.click()
                     time.sleep(2)
 
-                if self.locate_on_screen("photos/fight/common/evolved.png"):
+                if HumanMouse.locate_on_screen("photos/fight/common/evolved.png"):
                     time.sleep(0.5)
                     eokay = self.look_for_target_until_found("photos/fight/common/evolved_okay.png")
                     HumanMouse.move_to(eokay, 0, 0)
@@ -176,7 +172,7 @@ class MiscritsBot:
                 HumanMouse.click()
 
                 time.sleep(0.5)
-                if self.locate_on_screen("photos/fight/common/rank_up.png"):
+                if HumanMouse.locate_on_screen("photos/fight/common/rank_up.png"):
                     time.sleep(0.5)
                     ruokay = self.look_for_target_until_found("photos/fight/common/rankup_okay.png")
                     HumanMouse.move_to(ruokay, 0, 0)
