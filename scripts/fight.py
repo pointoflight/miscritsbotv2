@@ -41,11 +41,11 @@ class MiscritsBot:
         while True:
             crit_name = self.fight_info.get_crit_name()
             print(crit_name, "encountered!")
-            if crit_name and ("Fe" not in crit_name and "Pe" not in crit_name and "C" not in crit_name):
-                print("⚠️ Dark Poltergust Encountered!")
+            if crit_name and ("W" in crit_name or "ll" in crit_name or "ly" in crit_name):
+                print("⚠️ Woolly Encountered!")
                 for _ in range(300):
                     if self.notifier:
-                        self.notifier.send_telegram("⚠️ Dark Poltergust Encountered!")
+                        self.notifier.send_telegram("⚠️ Woolly Encountered!")
                     time.sleep(1)
 
             my_turn = HumanMouse.locate_on_screen(my_turn_path, confidence)
