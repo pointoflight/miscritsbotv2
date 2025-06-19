@@ -27,15 +27,15 @@ class FightInfo:
             ("A+", "photos/tiers/A+.png"),
             ("A", "photos/tiers/A.png"),
             ("S+", "photos/tiers/S+.png"),
-            ("S", "photos/tiers/S.png"),
-            ("B+", "photos/tiers/B+.png"),
-            ("B", "photos/tiers/B.png"),
-            ("C+", "photos/tiers/C+.png"),
-            ("C", "photos/tiers/C.png"),
-            ("D+", "photos/tiers/D+.png"),
-            ("D", "photos/tiers/D.png"),
-            ("F+", "photos/tiers/F+.png"),
-            ("F", "photos/tiers/F.png")
+            ("S", "photos/tiers/S.png")
+            # ("B+", "photos/tiers/B+.png"),
+            # ("B", "photos/tiers/B.png"),
+            # ("C+", "photos/tiers/C+.png"),
+            # ("C", "photos/tiers/C.png"),
+            # ("D+", "photos/tiers/D+.png"),
+            # ("D", "photos/tiers/D.png"),
+            # ("F+", "photos/tiers/F+.png"),
+            # ("F", "photos/tiers/F.png")
         ]
 
         for tier_name, template_path in tiers:

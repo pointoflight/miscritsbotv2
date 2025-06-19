@@ -34,7 +34,7 @@ name_searches = {
 
 
 class MiscritsBot:
-    def __init__(self, search_crit, trainer_crit, notifier=None, plat_training=False):
+    def __init__(self, search_crit, trainer_crit, notifier=None, plat_training=False, plat_capture_attempts=0):
         self.notifier = notifier
         self.trainer_crit = trainer_crit
         self.search_crit = search_crit
@@ -44,6 +44,7 @@ class MiscritsBot:
         self.search_loc_x_off = offset_coords[search_crit][0]
         self.search_loc_y_off = offset_coords[search_crit][1]
         self.plat_training = plat_training
+        self.plat_capture_attempts = plat_capture_attempts
         self.fight_info = FightInfo()
 
     def look_for_target_until_found(self, target_path, confidence=0.8):
@@ -79,11 +80,14 @@ class MiscritsBot:
                     if self.notifier:
                         self.notifier.send_telegram("⚠️ " + self.search_crit + " encountered!")
                     time.sleep(1)
+                return True
+        return False
 
     def look_for_fight_over_or_not(self, my_turn_path, fight_complete_path, confidence=0.8):
         while True:
             crit_name, capture_chance = self.fight_info.get_capture_chance_and_crit_name()
-            self.notify_if_found(crit_name)
+            found = self.notify_if_found(crit_name)
+
             crit_tier = self.fight_info.get_tier()
             if not crit_name:
                 crit_name = "--"
@@ -93,10 +97,10 @@ class MiscritsBot:
             fight_complete = HumanMouse.locate_on_screen(fight_complete_path, confidence)
             if my_turn:
                 print(my_turn_path, "found!")
-                return {"what_next": "my_turn", "tier": crit_tier, "capture_chance": int(capture_chance)}
+                return {"what_next": "my_turn", "tier": crit_tier, "capture_chance": int(capture_chance), "found": found}
             if fight_complete:
                 print(fight_complete_path, "found!")
-                return {"what_next": "fight_complete", "tier": crit_tier, "capture_chance": int(capture_chance)}
+                return {"what_next": "fight_complete", "tier": crit_tier, "capture_chance": int(capture_chance), "found": found}
             else:
                 print("no targets found!")
                 time.sleep(1)
@@ -145,17 +149,19 @@ class MiscritsBot:
             time.sleep(17)
             return False
 
-        tried_capture = False
+
+        capture_attempts = 0
         while True:
             turn_ret = self.look_for_fight_over_or_not(self.my_turn, "photos/fight/common/fight_continue.png")
 
             if turn_ret["what_next"] == 'my_turn' :
-                if turn_ret["tier"] in ["A+", "A", "S+", "S"] and turn_ret["capture_chance"] >= 80 and not tried_capture :
+                if (turn_ret["tier"] in ["A+", "A", "S+", "S"] and turn_ret["capture_chance"] >= 80 and capture_attempts == 0 and not turn_ret["found"]) or \
+                    (turn_ret["found"] and turn_ret["capture_chance"] >= 50 and capture_attempts < self.plat_capture_attempts):
                     capture_button = HumanMouse.locate_on_screen("photos/fight/common/capture.png", confidence=0.8)
                     if capture_button:
                         HumanMouse.move_to(capture_button, 0, 0)
                         HumanMouse.click()
-                        tried_capture = True
+                        capture_attempts += 1
                         time.sleep(5.4)
 
                         if HumanMouse.locate_on_screen("photos/fight/common/captured.png", confidence=0.8):
@@ -199,6 +205,7 @@ class MiscritsBot:
                             save = HumanMouse.locate_on_screen("photos/fight/common/save.png")
                             HumanMouse.move_to(save, 0, 0)
                             HumanMouse.click()
+                            time.sleep(0.3)
 
             if is_ready_to_train:
                 train = self.look_for_target_until_found("photos/fight/common/train.png")
