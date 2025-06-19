@@ -6,14 +6,43 @@ from human_mouse import HumanMouse
 from notifier import Notifier
 from fight_info import FightInfo
 
+offset_coords = {
+    "woolly": (-460, 380),
+    "d_slithero": (-100, 200),
+    "d_polter": (175, -40),
+    "f_vhisp": (133, 260),
+    "boneshee": (250, 80),
+    "d_elefauna": (-170, 300),
+    "b_flowerpiller": (-5, 105),
+    "d_treemur": (325, 150),
+    "sledgehog": (100, 270),
+    "f_flintly": (-150, -20)
+}
+
+name_searches = {
+    "woolly": ["W"],
+    "d_slithero": ["D", "Sl"],
+    "d_polter": ["D", "Po"],
+    "f_vhisp": ["Fo", "V", "sp"],
+    "boneshee": ["Bo", "on", "ee"],
+    "d_elefauna": ["El", "f"],
+    "b_flowerpiller": ["B", "we", "ted", "er"],
+    "d_treemur": ["T", "mu", "ur"],
+    "sledgehog": ["S", "ho"],
+    "f_flintly": ["Fl", "Fo", "tl"]
+}
+
+
 class MiscritsBot:
-    def __init__(self, fight_background, crit_ref, my_turn, search_loc_x_off, search_loc_y_off, notifier=None, plat_training=False):
+    def __init__(self, search_crit, trainer_crit, notifier=None, plat_training=False):
         self.notifier = notifier
-        self.fight_background = fight_background
-        self.crit_ref = crit_ref
-        self.my_turn = my_turn
-        self.search_loc_x_off = search_loc_x_off
-        self.search_loc_y_off = search_loc_y_off
+        self.trainer_crit = trainer_crit
+        self.search_crit = search_crit
+        self.fight_background = "photos/fight/" + search_crit + "/fight_background.png"
+        self.crit_ref = "photos/fight/" + search_crit + "/ref.png"
+        self.my_turn = "photos/fight/" + search_crit + "/my_turn.png"
+        self.search_loc_x_off = offset_coords[search_crit][0]
+        self.search_loc_y_off = offset_coords[search_crit][1]
         self.plat_training = plat_training
         self.fight_info = FightInfo()
 
@@ -41,12 +70,18 @@ class MiscritsBot:
         while True:
             crit_name = self.fight_info.get_crit_name()
             print(crit_name, "encountered!")
-            if crit_name and ("W" in crit_name or "ll" in crit_name or "ly" in crit_name):
-                print("⚠️ Woolly Encountered!")
-                for _ in range(300):
-                    if self.notifier:
-                        self.notifier.send_telegram("⚠️ Woolly Encountered!")
-                    time.sleep(1)
+            check = False
+            if crit_name:
+                for name_search in name_searches[self.search_crit]:
+                    if name_search in crit_name:
+                        check = True
+                        break
+                if check:
+                    print("⚠️ " + self.search_crit + " Encountered!")
+                    for _ in range(300):
+                        if self.notifier:
+                            self.notifier.send_telegram("⚠️ " + self.search_crit + " Encountered!")
+                        time.sleep(1)
 
             my_turn = HumanMouse.locate_on_screen(my_turn_path, confidence)
             fight_complete = HumanMouse.locate_on_screen(fight_complete_path, confidence)
@@ -107,7 +142,7 @@ class MiscritsBot:
         while True:
             what_next, _ = self.look_for_fight_over_or_not(self.my_turn, "photos/fight/common/fight_continue.png")
             if what_next == 'my_turn':
-                attack_move = self.look_for_target_until_found("photos/fight/common/shooting_spawn.png")
+                attack_move = self.look_for_target_until_found("photos/fight/common/" + self.trainer_crit + "_attack.png")
                 HumanMouse.move_to(attack_move, 0, 0)
                 HumanMouse.click()
             else:
@@ -126,8 +161,8 @@ class MiscritsBot:
                 HumanMouse.move_to(train, 0, 0)
                 HumanMouse.click()
 
-                genesis = self.look_for_target_until_found("photos/fight/common/genesis.png")
-                HumanMouse.move_to(genesis, 20, 40)
+                trainer_crit_loc = self.look_for_target_until_found("photos/fight/common/" + self.trainer_crit + ".png")
+                HumanMouse.move_to(trainer_crit_loc, 20, 40)
                 HumanMouse.click()
 
                 train_now = self.look_for_target_until_found("photos/fight/common/train_now.png")
