@@ -29,11 +29,11 @@ bot.main_loop()
 # import time
 
 # start = time.time()
-# loc = HumanMouse.locate_on_screen("photos/fight/f_flintly/ref.png")
+# loc = HumanMouse.locate_on_screen("photos/fight/common/order_of.png")
 # end = time.time()
 
 # print(f"Time taken: {end - start:.4f} seconds")
 
 # if loc:
-#     loc = (loc[0] + -150 + random.randint(-2, 2), loc[1] + -20 + random.randint(-2, 2))
+#     loc = (loc[0] + 0 + random.randint(-2, 2), loc[1] + 400 + random.randint(-2, 2))
 #     HumanMouse.move_to(loc, random.randint(0, 10), random.randint(-10, 0))

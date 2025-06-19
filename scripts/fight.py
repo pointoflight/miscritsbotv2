@@ -66,31 +66,37 @@ class MiscritsBot:
             count += 1
             stop += 1
 
+    def notify_if_found(self, crit_name):
+        check = False
+        if crit_name:
+            for name_search in name_searches[self.search_crit]:
+                if name_search in crit_name:
+                    check = True
+                    break
+            if check:
+                print("⚠️ " + self.search_crit + " encountered!")
+                for _ in range(300):
+                    if self.notifier:
+                        self.notifier.send_telegram("⚠️ " + self.search_crit + " encountered!")
+                    time.sleep(1)
+
     def look_for_fight_over_or_not(self, my_turn_path, fight_complete_path, confidence=0.8):
         while True:
-            crit_name = self.fight_info.get_crit_name()
-            print(crit_name, "encountered!")
-            check = False
-            if crit_name:
-                for name_search in name_searches[self.search_crit]:
-                    if name_search in crit_name:
-                        check = True
-                        break
-                if check:
-                    print("⚠️ " + self.search_crit + " Encountered!")
-                    for _ in range(300):
-                        if self.notifier:
-                            self.notifier.send_telegram("⚠️ " + self.search_crit + " Encountered!")
-                        time.sleep(1)
+            crit_name, capture_chance = self.fight_info.get_capture_chance_and_crit_name()
+            self.notify_if_found(crit_name)
+            crit_tier = self.fight_info.get_tier()
+            if not crit_name:
+                crit_name = "--"
+            print(crit_tier + " " + ''.join(crit_name.split()) + " " + capture_chance + "%" + " encountered!")
 
             my_turn = HumanMouse.locate_on_screen(my_turn_path, confidence)
             fight_complete = HumanMouse.locate_on_screen(fight_complete_path, confidence)
             if my_turn:
                 print(my_turn_path, "found!")
-                return "my_turn", my_turn
+                return {"what_next": "my_turn", "tier": crit_tier, "capture_chance": int(capture_chance)}
             if fight_complete:
                 print(fight_complete_path, "found!")
-                return "fight_complete", fight_complete
+                return {"what_next": "fight_complete", "tier": crit_tier, "capture_chance": int(capture_chance)}
             else:
                 print("no targets found!")
                 time.sleep(1)
@@ -139,12 +145,30 @@ class MiscritsBot:
             time.sleep(17)
             return False
 
+        tried_capture = False
         while True:
-            what_next, _ = self.look_for_fight_over_or_not(self.my_turn, "photos/fight/common/fight_continue.png")
-            if what_next == 'my_turn':
-                attack_move = self.look_for_target_until_found("photos/fight/common/" + self.trainer_crit + "_attack.png")
-                HumanMouse.move_to(attack_move, 0, 0)
-                HumanMouse.click()
+            turn_ret = self.look_for_fight_over_or_not(self.my_turn, "photos/fight/common/fight_continue.png")
+
+            if turn_ret["what_next"] == 'my_turn' :
+                if turn_ret["tier"] in ["A+", "A", "S+", "S"] and turn_ret["capture_chance"] >= 80 and not tried_capture :
+                    capture_button = HumanMouse.locate_on_screen("photos/fight/common/capture.png", confidence=0.8)
+                    if capture_button:
+                        HumanMouse.move_to(capture_button, 0, 0)
+                        HumanMouse.click()
+                        tried_capture = True
+                        time.sleep(5.4)
+
+                        if HumanMouse.locate_on_screen("photos/fight/common/captured.png", confidence=0.8):
+                            captured_okay = HumanMouse.locate_on_screen("photos/fight/common/captured_okay.png", confidence=0.8)
+                            HumanMouse.move_to(captured_okay, 0, 0)
+                            HumanMouse.click()
+                            time.sleep(0.8)
+
+                        continue
+                else:
+                    attack_move = self.look_for_target_until_found("photos/fight/common/" + self.trainer_crit + "_attack.png")
+                    HumanMouse.move_to(attack_move, 0, 0)
+                    HumanMouse.click()
             else:
                 fight_complete = self.look_for_target_until_found("photos/fight/common/fight_continue.png")
                 time.sleep(1.5)
@@ -156,6 +180,26 @@ class MiscritsBot:
     def main_loop(self):
         while True:
             is_ready_to_train = self.fight_on_location(self.crit_ref)
+            
+            time.sleep(1)
+            if HumanMouse.locate_on_screen("photos/fight/common/congrats.png"):
+                keep = HumanMouse.locate_on_screen("photos/fight/common/keep.png")
+                if keep:
+                    HumanMouse.move_to(keep, 0, 0)
+                    HumanMouse.click()
+                    my_crits = HumanMouse.locate_on_screen("photos/fight/common/my_miscrits.png")
+                    if my_crits:
+                        HumanMouse.move_to(my_crits, 0, 0)
+                        HumanMouse.click()
+                        time.sleep(0.5) # TODO: maybe optimize little everywhere not just here. All sleeps.
+                        order_of = HumanMouse.locate_on_screen("photos/fight/common/order_of.png")
+                        if order_of:
+                            order_of = (order_of[0], order_of[1] + 200)
+                            HumanMouse.smooth_drag(order_of, 0, 200)
+                            save = HumanMouse.locate_on_screen("photos/fight/common/save.png")
+                            HumanMouse.move_to(save, 0, 0)
+                            HumanMouse.click()
+
             if is_ready_to_train:
                 train = self.look_for_target_until_found("photos/fight/common/train.png")
                 HumanMouse.move_to(train, 0, 0)

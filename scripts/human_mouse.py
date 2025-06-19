@@ -18,10 +18,27 @@ class HumanMouse:
         pyautogui.mouseDown()
         time.sleep(0.1)
         pyautogui.mouseUp()
-        time.sleep(0.3)
+        time.sleep(0.3) # TODO: OPTIMIZE, 0.3 seems too much.
         HumanMouse.random_move()
 
     @staticmethod
     def locate_on_screen(template_path, confidence=0.8):
         location = pyautogui.locateCenterOnScreen(template_path, confidence=confidence)
         return location
+    
+    @staticmethod
+    def smooth_drag(start_pos, offset_x, offset_y):
+        """
+        Clicks and drags from start_pos by the given offset using tweening for smooth motion.
+        """
+        x_start, y_start = start_pos
+        x_end = x_start + offset_x
+        y_end = y_start + offset_y
+
+        pyautogui.moveTo(x_start, y_start, duration=0.1, tween=pyautogui.easeInOutQuad)
+        pyautogui.mouseDown()
+        time.sleep(0.05)
+
+        pyautogui.moveTo(x_end, y_end, duration=0.1, tween=pyautogui.easeInOutQuad)
+
+        pyautogui.mouseUp()

@@ -24,10 +24,10 @@ class FightInfo:
 
     def get_tier(self):
         tiers = [
-            ("S+", "photos/tiers/S+.png"),
-            ("S", "photos/tiers/S.png"),
             ("A+", "photos/tiers/A+.png"),
             ("A", "photos/tiers/A.png"),
+            ("S+", "photos/tiers/S+.png"),
+            ("S", "photos/tiers/S.png"),
             ("B+", "photos/tiers/B+.png"),
             ("B", "photos/tiers/B.png"),
             ("C+", "photos/tiers/C+.png"),
@@ -35,7 +35,7 @@ class FightInfo:
             ("D+", "photos/tiers/D+.png"),
             ("D", "photos/tiers/D.png"),
             ("F+", "photos/tiers/F+.png"),
-            ("F", "photos/tiers/F.png"),
+            ("F", "photos/tiers/F.png")
         ]
 
         for tier_name, template_path in tiers:
@@ -45,25 +45,33 @@ class FightInfo:
         return "NA/F-"
 
     def get_capture_chance(self):
-        loc = self.locate_on_screen("photos/fight/common/capture.png", confidence=0.8)
-        if loc:
-            cc = (loc[0] - 25, loc[1] + 17, loc[0] + 28, loc[1] + 37)
-            cc_image = ImageGrab.grab(bbox=cc)
-            capture_chance_config = r'--psm 7 -c tessedit_char_whitelist=0123456789%'
-            capture_chance = self.detect_text(cc_image, capture_chance_config)
-            return capture_chance
-
-        return None
+        _, chance = self.get_capture_chance_and_crit_name(name=False)
+        return chance
 
     def get_crit_name(self):
+        crit_name, _ = self.get_capture_chance_and_crit_name(chance=False)
+        return crit_name
+    
+    def get_capture_chance_and_crit_name(self, name=True, chance=True):
         loc = self.locate_on_screen("photos/fight/common/capture.png", confidence=0.8)
+        critter_name = "--"
+        capture_chance = "0"
         if loc:
-            print("found capture!")
-            crit_name = (loc[0] + 250, loc[1] - 90, loc[0] + 370, loc[1] - 72)
-            crit_name_image = ImageGrab.grab(bbox=crit_name)
-            crit_name_config = r'--psm 7 -c tessedit_char_whitelist=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-            critter_name = self.detect_text(crit_name_image, crit_name_config)
-            return critter_name
-        print("not found capture!")
+            if name:
+                crit_name = (loc[0] + 250, loc[1] - 90, loc[0] + 370, loc[1] - 72)
+                crit_name_image = ImageGrab.grab(bbox=crit_name)
+                crit_name_config = r'--psm 7 -c tessedit_char_whitelist=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+                critter_name = self.detect_text(crit_name_image, crit_name_config)
 
-        return None
+            if chance:
+                cc = (loc[0] - 25, loc[1] + 17, loc[0] + 28, loc[1] + 37)
+                cc_image = ImageGrab.grab(bbox=cc)
+                capture_chance_config = r'--psm 7 -c tessedit_char_whitelist=0123456789%'
+                capture_chance = self.detect_text(cc_image, capture_chance_config)
+                capture_chance = capture_chance.strip().rstrip('%')
+
+            return critter_name, capture_chance
+        
+        print("not found capture!")
+        return critter_name, capture_chance
+
