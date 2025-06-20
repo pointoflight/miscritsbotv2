@@ -16,7 +16,8 @@ offset_coords = {
     "b_flowerpiller": (-5, 105),
     "d_treemur": (325, 150),
     "sledgehog": (100, 270),
-    "f_flintly": (-150, -20)
+    "f_flintly": (-150, -20),
+    "d_flutter": (180, -100)
 }
 
 name_searches = {
@@ -26,10 +27,11 @@ name_searches = {
     "f_vhisp": ["Fo", "V", "sp"],
     "boneshee": ["Bo", "on", "ee"],
     "d_elefauna": ["El", "f"],
-    "b_flowerpiller": ["B", "we", "ted", "er"],
+    "b_flowerpiller": ["B", "ted"],
     "d_treemur": ["T", "mu", "ur"],
     "sledgehog": ["S", "ho"],
-    "f_flintly": ["Fl", "Fo", "tl"]
+    "f_flintly": ["Fo"],
+    "d_flutter": ["F", "tt", "ut"]
 }
 
 
@@ -75,7 +77,7 @@ class MiscritsBot:
                     check = True
                     break
             if check:
-                print("⚠️ " + self.search_crit + " encountered!")
+                print(crit_name + "⚠️ " + self.search_crit + " encountered!")
                 for _ in range(300):
                     if self.notifier:
                         self.notifier.send_telegram("⚠️ " + self.search_crit + " encountered!")
@@ -155,12 +157,17 @@ class MiscritsBot:
             turn_ret = self.look_for_fight_over_or_not(self.my_turn, "photos/fight/common/fight_continue.png")
 
             if turn_ret["what_next"] == 'my_turn' :
-                if (turn_ret["tier"] in ["A+", "A", "S+", "S"] and turn_ret["capture_chance"] >= 80 and capture_attempts == 0 and not turn_ret["found"]) or \
+                if (turn_ret["tier"] in ["A+", "S+", "S"] and turn_ret["capture_chance"] >= 80 and capture_attempts == 0 and not turn_ret["found"]) or \
                     (turn_ret["found"] and turn_ret["capture_chance"] >= 50 and capture_attempts < self.plat_capture_attempts):
                     capture_button = HumanMouse.locate_on_screen("photos/fight/common/capture.png", confidence=0.8)
                     if capture_button:
                         HumanMouse.move_to(capture_button, 0, 0)
                         HumanMouse.click()
+                        if capture_attempts > 0:
+                            time.sleep(1)
+                            plat_capture_button = HumanMouse.locate_on_screen("photos/fight/common/plat_capture.png", confidence=0.8)
+                            HumanMouse.move_to(plat_capture_button, 0, 0)
+                            HumanMouse.click()
                         capture_attempts += 1
                         time.sleep(5.4)
 
@@ -205,7 +212,7 @@ class MiscritsBot:
                             save = HumanMouse.locate_on_screen("photos/fight/common/save.png")
                             HumanMouse.move_to(save, 0, 0)
                             HumanMouse.click()
-                            time.sleep(0.3)
+                            time.sleep(0.4)
 
             if is_ready_to_train:
                 train = self.look_for_target_until_found("photos/fight/common/train.png")

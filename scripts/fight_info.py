@@ -69,6 +69,8 @@ class FightInfo:
                 capture_chance_config = r'--psm 7 -c tessedit_char_whitelist=0123456789%'
                 capture_chance = self.detect_text(cc_image, capture_chance_config)
                 capture_chance = capture_chance.strip().rstrip('%')
+                if not capture_chance:
+                    capture_chance = "0"
 
             return critter_name, capture_chance
         
