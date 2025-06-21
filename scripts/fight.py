@@ -157,7 +157,7 @@ class MiscritsBot:
         while True:
             turn_ret = self.look_for_fight_over_or_not(self.my_turn, "photos/fight/common/fight_continue.png")
 
-            if turn_ret["what_next"] == 'my_turn' :
+            if turn_ret["what_next"] == 'my_turn':
                 if (turn_ret["tier"] in ["A+", "S+", "S"] and turn_ret["capture_chance"] >= 80 and capture_attempts == 0 and not turn_ret["found"]) or \
                     (turn_ret["found"] and turn_ret["capture_chance"] >= 50 and capture_attempts - 1 < self.plat_capture_attempts):
                     capture_button = HumanMouse.locate_on_screen("photos/fight/common/capture.png", confidence=0.8)
@@ -213,7 +213,7 @@ class MiscritsBot:
                             save = HumanMouse.locate_on_screen("photos/fight/common/save.png")
                             HumanMouse.move_to(save, 0, 0)
                             HumanMouse.click()
-                            time.sleep(0.4)
+                            time.sleep(0.8)
 
             if is_ready_to_train:
                 train = self.look_for_target_until_found("photos/fight/common/train.png")
@@ -241,10 +241,12 @@ class MiscritsBot:
                         HumanMouse.click()
                     time.sleep(2)
 
-                # time.sleep(5)
-                cont = self.look_for_target_until_found("photos/fight/common/train_continue.png")
-                HumanMouse.move_to(cont, 0, 0)
-                # time.sleep(5)
+                print("self.plat_training = ", self.plat_training)
+                time.sleep(1)
+                train_continue_button = self.look_for_target_until_found("photos/fight/common/train_continue.png")
+                print("!!! moving to train continue")
+                HumanMouse.move_to(train_continue_button, 0, 0)
+                time.sleep(0.1)
                 HumanMouse.click()
                 time.sleep(0.1)
                 HumanMouse.click()
