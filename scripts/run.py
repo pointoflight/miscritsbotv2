@@ -9,7 +9,7 @@ from human_mouse import HumanMouse
 
 
 notifier = Notifier()
-bot = MiscritsBot(search_crit="munkee",
+bot = MiscritsBot(search_crit="f_vhisp",
                   trainer_crit="papa",
                   notifier=notifier,
                   plat_training=False,

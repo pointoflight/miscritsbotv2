@@ -79,7 +79,7 @@ class MiscritsBot:
                     break
             if check:
                 print(crit_name + "⚠️ " + self.search_crit + " encountered!")
-                for _ in range(0):
+                for _ in range(300):
                     if self.notifier:
                         self.notifier.send_telegram("⚠️ " + self.search_crit + " encountered!")
                     time.sleep(1)
@@ -176,7 +176,7 @@ class MiscritsBot:
                             captured_okay = HumanMouse.locate_on_screen("photos/fight/common/captured_okay.png", confidence=0.8)
                             HumanMouse.move_to(captured_okay, 0, 0)
                             HumanMouse.click()
-                            time.sleep(0.01)
+                            time.sleep(0.5)
 
                         continue
                 else:
