@@ -1,4 +1,3 @@
-import pyautogui
 import time
 import random
 
@@ -80,7 +79,7 @@ class MiscritsBot:
                     break
             if check:
                 print(crit_name + "⚠️ " + self.search_crit + " encountered!")
-                for _ in range(2):
+                for _ in range(0):
                     if self.notifier:
                         self.notifier.send_telegram("⚠️ " + self.search_crit + " encountered!")
                     time.sleep(1)
@@ -107,7 +106,7 @@ class MiscritsBot:
                 return {"what_next": "fight_complete", "tier": crit_tier, "capture_chance": int(capture_chance), "found": found}
             else:
                 print("no targets found!")
-                time.sleep(1)
+                time.sleep(0.1)
 
     def look_for_fight_or_potion(self, fight_path, potion_path, confidence=0.8):
         while True:
@@ -121,7 +120,7 @@ class MiscritsBot:
                 return "potion", potion
             else:
                 print("no targets found!")
-                time.sleep(1)
+                time.sleep(0.01)
 
     def ready_to_train(self, image_path, confidence=0.8):
         is_ready_to_train = HumanMouse.locate_on_screen(image_path, confidence)
@@ -144,7 +143,7 @@ class MiscritsBot:
         search_for_miscrit = self.look_for_target_until_found("photos/fight/common/search_for_miscrit.png")
         if not search_for_miscrit:
             return False
-        time.sleep(0.2)
+        time.sleep(0.05)
         HumanMouse.click()
         time.sleep(1.5)
 
@@ -160,7 +159,7 @@ class MiscritsBot:
 
             if turn_ret["what_next"] == 'my_turn' :
                 if (turn_ret["tier"] in ["A+", "S+", "S"] and turn_ret["capture_chance"] >= 80 and capture_attempts == 0 and not turn_ret["found"]) or \
-                    (turn_ret["found"] and turn_ret["capture_chance"] >= 50 and capture_attempts < self.plat_capture_attempts):
+                    (turn_ret["found"] and turn_ret["capture_chance"] >= 50 and capture_attempts - 1 < self.plat_capture_attempts):
                     capture_button = HumanMouse.locate_on_screen("photos/fight/common/capture.png", confidence=0.8)
                     if capture_button:
                         HumanMouse.move_to(capture_button, 0, 0)
@@ -177,7 +176,7 @@ class MiscritsBot:
                             captured_okay = HumanMouse.locate_on_screen("photos/fight/common/captured_okay.png", confidence=0.8)
                             HumanMouse.move_to(captured_okay, 0, 0)
                             HumanMouse.click()
-                            time.sleep(0.8)
+                            time.sleep(0.01)
 
                         continue
                 else:
@@ -186,7 +185,7 @@ class MiscritsBot:
                     HumanMouse.click()
             else:
                 fight_complete = self.look_for_target_until_found("photos/fight/common/fight_continue.png")
-                time.sleep(1.5)
+                time.sleep(1.5) # TODO: maybe a little optimize. necessary to wait though as it takes time to appear.
                 is_ready_to_train = self.ready_to_train("photos/fight/common/ready_to_train.png")
                 HumanMouse.move_to(fight_complete, 0, 0)
                 HumanMouse.click()
@@ -196,7 +195,7 @@ class MiscritsBot:
         while True:
             is_ready_to_train = self.fight_on_location(self.crit_ref)
             
-            time.sleep(1)
+            time.sleep(1) # Wait between clikc continue and see if captured congrats.
             if HumanMouse.locate_on_screen("photos/fight/common/congrats.png"):
                 keep = HumanMouse.locate_on_screen("photos/fight/common/keep.png")
                 if keep:
@@ -206,7 +205,7 @@ class MiscritsBot:
                     if my_crits:
                         HumanMouse.move_to(my_crits, 0, 0)
                         HumanMouse.click()
-                        time.sleep(0.5) # TODO: maybe optimize little everywhere not just here. All sleeps.
+                        time.sleep(0.3) # TODO: maybe optimize little everywhere not just here. All sleeps.
                         order_of = HumanMouse.locate_on_screen("photos/fight/common/order_of.png")
                         if order_of:
                             order_of = (order_of[0], order_of[1] + 200)
@@ -230,20 +229,22 @@ class MiscritsBot:
                 HumanMouse.click()
 
                 if self.plat_training:
-                    time.sleep(1)
+                    time.sleep(1) # TODO: optimize, maybe no sleep needed.
                     plat_train = self.look_for_target_until_found("photos/fight/common/plat_train.png")
                     HumanMouse.move_to(plat_train, 0, 0)
-                    time.sleep(1)
+                    time.sleep(1) # TODO: optimize, maybe no sleep needed.
                     HumanMouse.click()
-                    time.sleep(0.5)
+                    time.sleep(0.5) # TODO: optimize, maybe no sleep needed.
                     plat_train = HumanMouse.locate_on_screen("photos/fight/common/plat_train.png")
                     if plat_train:
                         HumanMouse.move_to(plat_train, 0, 0)
                         HumanMouse.click()
                     time.sleep(2)
 
+                # time.sleep(5)
                 cont = self.look_for_target_until_found("photos/fight/common/train_continue.png")
                 HumanMouse.move_to(cont, 0, 0)
+                # time.sleep(5)
                 HumanMouse.click()
                 time.sleep(0.1)
                 HumanMouse.click()
@@ -256,11 +257,11 @@ class MiscritsBot:
                     time.sleep(2)
 
                 if HumanMouse.locate_on_screen("photos/fight/common/evolved.png"):
-                    time.sleep(0.5)
+                    time.sleep(0.5) # TODO: not needed? why wait to click okay after already found? but only evolves 3 times max so only 1.5 seconds to be saved.
                     eokay = self.look_for_target_until_found("photos/fight/common/evolved_okay.png")
                     HumanMouse.move_to(eokay, 0, 0)
                     HumanMouse.click()
-                    time.sleep(1)
+                    time.sleep(1) # TODO: optimize?
 
                 cross = self.look_for_target_until_found("photos/fight/common/cross.png")
                 HumanMouse.move_to(cross, 0, 0)
@@ -268,7 +269,7 @@ class MiscritsBot:
 
                 time.sleep(0.5)
                 if HumanMouse.locate_on_screen("photos/fight/common/rank_up.png"):
-                    time.sleep(0.5)
+                    time.sleep(0.5) # TODO: same here, max 3 times. 
                     ruokay = self.look_for_target_until_found("photos/fight/common/rankup_okay.png")
                     HumanMouse.move_to(ruokay, 0, 0)
                     HumanMouse.click()
