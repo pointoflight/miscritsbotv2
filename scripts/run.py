@@ -9,11 +9,11 @@ from human_mouse import HumanMouse
 
 
 notifier = Notifier()
-bot = MiscritsBot(search_crit="b_flowerpiller",
+bot = MiscritsBot(search_crit="munkee",
                   trainer_crit="papa",
                   notifier=notifier,
-                  plat_training=True,
-                  plat_capture_attempts=2)
+                  plat_training=False,
+                  plat_capture_attempts=0)
 
 bot.main_loop()
 
@@ -27,14 +27,8 @@ bot.main_loop()
 #     print("File does not exist.")
 
 # import random
-# import time
 
-# start = time.time()
-# loc = HumanMouse.locate_on_screen("photos/fight/common/order_of.png")
-# end = time.time()
-# print(f"Time taken: {end - start:.4f} seconds")
-
-# loc = HumanMouse.locate_on_screen("photos/fight/d_flutter/ref.png")
+# loc = HumanMouse.locate_on_screen("photos/fight/munkee/ref.png")
 # if loc:
-#     loc = (loc[0] + 180 + random.randint(-2, 2), loc[1] + -100 + random.randint(-2, 2))
+#     loc = (loc[0] + -250 + random.randint(-2, 2), loc[1] + -35 + random.randint(-2, 2))
 #     HumanMouse.move_to(loc, random.randint(0, 10), random.randint(-10, 0))

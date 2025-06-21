@@ -17,7 +17,8 @@ offset_coords = {
     "d_treemur": (325, 150),
     "sledgehog": (100, 270),
     "f_flintly": (-150, -20),
-    "d_flutter": (180, -100)
+    "d_flutter": (180, -100),
+    "munkee": (-250, -35)
 }
 
 name_searches = {
@@ -31,7 +32,8 @@ name_searches = {
     "d_treemur": ["T", "mu", "ur"],
     "sledgehog": ["S", "ho"],
     "f_flintly": ["Fo"],
-    "d_flutter": ["F", "tt", "ut"]
+    "d_flutter": ["F", "tt", "ut"],
+    "munkee": ["M", "K"]
 }
 
 
@@ -65,7 +67,7 @@ class MiscritsBot:
                 return target
             else:
                 print(target_path, "not found!")
-                time.sleep(1)
+                time.sleep(0.2)
             count += 1
             stop += 1
 
@@ -78,7 +80,7 @@ class MiscritsBot:
                     break
             if check:
                 print(crit_name + "⚠️ " + self.search_crit + " encountered!")
-                for _ in range(300):
+                for _ in range(2):
                     if self.notifier:
                         self.notifier.send_telegram("⚠️ " + self.search_crit + " encountered!")
                     time.sleep(1)
