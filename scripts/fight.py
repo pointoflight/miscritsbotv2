@@ -253,6 +253,7 @@ class MiscritsBot:
                         release_yes = HumanMouse.locate_on_screen("photos/fight/common/release_yes.png")
                         HumanMouse.move_to(release_yes, 0, 0)
                         HumanMouse.click()
+                        time.sleep(2.6)
 
 
             if is_ready_to_train:
