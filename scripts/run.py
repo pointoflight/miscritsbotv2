@@ -9,14 +9,14 @@ from fight_info import FightInfo
 # woolly_offset_coords = (-460,380)
 
 
-# notifier = Notifier()
-# bot = MiscritsBot(search_crit="b_flowerpiller",
-#                   trainer_crit="papa",
-#                   notifier=notifier,
-#                   plat_training=False,
-#                   plat_capture_attempts=2)
+notifier = Notifier()
+bot = MiscritsBot(search_crit="b_flowerpiller",
+                  trainer_crit="papa",
+                  notifier=notifier,
+                  plat_training=False,
+                  plat_capture_attempts=2)
 
-# bot.main_loop()
+bot.main_loop()
 
 # ----------------------
 
@@ -31,16 +31,16 @@ from fight_info import FightInfo
 #     print("File does not exist.")
 
 # import random
-import time 
+# import time 
 
-while True:
-    loc = HumanMouse.locate_on_screen("photos/fight/common/capture.png")
-    if loc:
-        print("found capture!")
-    else:
-        print("not found capture!")
-    time.sleep(0.1)
-    
+# while True:
+#     loc = HumanMouse.locate_on_screen("photos/fight/common/capture.png")
+#     if loc:
+#         print("found capture!")
+#     else:
+#         print("not found capture!")
+#     time.sleep(0.1)
+
 # loc = HumanMouse.locate_on_screen("photos/fight/munkee/ref.png")
 # if loc:
 #     loc = (loc[0] + -250 + random.randint(-2, 2), loc[1] + -35 + random.randint(-2, 2))
