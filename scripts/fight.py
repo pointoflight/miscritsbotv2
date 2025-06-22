@@ -171,7 +171,7 @@ class MiscritsBot:
                     crit_name = "--"
                 print(crit_tier + " " + ''.join(crit_name.split()) + " " + capture_chance + "%" + " encountered!")
 
-                if (crit_tier in ["B+", "A", "A+", "S+", "S"] and int(capture_chance) >= 80 and capture_attempts == 0 and not found) or \
+                if (crit_tier in ["A+", "S+", "S"] and int(capture_chance) >= 80 and capture_attempts == 0 and not found) or \
                     (found and int(capture_chance) >= 50 and capture_attempts - 1 < self.plat_capture_attempts):
                     capture_button = HumanMouse.locate_on_screen("photos/fight/common/capture.png", confidence=0.8)
                     if capture_button:
@@ -190,7 +190,7 @@ class MiscritsBot:
                             captured_okay = HumanMouse.locate_on_screen("photos/fight/common/captured_okay.png", confidence=0.8)
                             HumanMouse.move_to(captured_okay, 0, 0)
                             HumanMouse.click()
-                            time.sleep(0.8)
+                            time.sleep(3)
 
                         continue
                 else:
@@ -231,6 +231,8 @@ class MiscritsBot:
                     if keep:
                         HumanMouse.move_to(keep, 0, 0)
                         HumanMouse.click()
+                        if fight_crit_found:
+                            self.notifier.send_telegram(":) " + fight_tier + " " + self.search_crit + " CAPTURED!")
                         my_crits = HumanMouse.locate_on_screen("photos/fight/common/my_miscrits.png")
                         if my_crits:
                             HumanMouse.move_to(my_crits, 0, 0)
