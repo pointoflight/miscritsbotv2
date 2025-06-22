@@ -155,12 +155,13 @@ class MiscritsBot:
 
 
         capture_attempts = 0
+        crit_name = '--'
+        capture_chance = "0"
+        crit_tier = "N"
+        found = False
+
         while True:
             turn_ret = self.look_for_fight_over_or_not(self.my_turn, "photos/fight/common/fight_continue.png")
-            crit_name = '--'
-            capture_chance = "0"
-            crit_tier = "N"
-            found = False
 
             if turn_ret == 'my_turn':
                 crit_name, capture_chance = self.fight_info.get_capture_chance_and_crit_name()
@@ -221,6 +222,8 @@ class MiscritsBot:
                 # captured_crit_name = self.fight_info.get_captured_crit_name()
                 # print("captured crit name = ", captured_crit_name)
 
+                print("before keep/release: ")
+                print("fight_tier =", fight_tier)
                 if HumanMouse.locate_on_screen("photos/fight/common/RS.png") or \
                     fight_crit_found or fight_tier in ["S+", "S"] or \
                         (fight_tier == "A+" and HumanMouse.locate_on_screen("photos/fight/common/red.png")):
