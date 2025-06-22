@@ -13,7 +13,7 @@ notifier = Notifier()
 bot = MiscritsBot(search_crit="b_flowerpiller",
                   trainer_crit="papa",
                   notifier=notifier,
-                  plat_training=False,
+                  plat_training=True,
                   plat_capture_attempts=2)
 
 bot.main_loop()

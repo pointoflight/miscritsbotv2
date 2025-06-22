@@ -224,7 +224,7 @@ class MiscritsBot:
 
                 print("before keep/release: ")
                 print("fight_tier =", fight_tier)
-                if HumanMouse.locate_on_screen("photos/fight/common/RS.png") or \
+                if HumanMouse.locate_on_screen("photos/fight/common/RS.png", confidence=0.99) or \
                     fight_crit_found or fight_tier in ["S+", "S"] or \
                         (fight_tier == "A+" and HumanMouse.locate_on_screen("photos/fight/common/red.png")):
                     keep = HumanMouse.locate_on_screen("photos/fight/common/keep.png")
