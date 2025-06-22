@@ -19,6 +19,7 @@ class FightInfo:
         sharpened_scaled = sharpened_scaled.filter(ImageFilter.SHARPEN)
         sharpened_scaled = sharpened_scaled.filter(ImageFilter.SHARPEN)
         inverted_scaled = ImageOps.invert(sharpened_scaled)
+        # inverted_scaled.show()
         text = pytesseract.image_to_string(inverted_scaled, config=custom_config)
         return text
 
@@ -27,8 +28,8 @@ class FightInfo:
             ("A+", "photos/tiers/A+.png"),
             ("A", "photos/tiers/A.png"),
             ("S+", "photos/tiers/S+.png"),
-            ("S", "photos/tiers/S.png")
-            # ("B+", "photos/tiers/B+.png"),
+            ("S", "photos/tiers/S.png"),
+            ("B+", "photos/tiers/B+.png")
             # ("B", "photos/tiers/B.png"),
             # ("C+", "photos/tiers/C+.png"),
             # ("C", "photos/tiers/C.png"),
@@ -76,4 +77,44 @@ class FightInfo:
         
         print("not found capture!")
         return critter_name, capture_chance
+    
+    # def get_captured_crit_name_and_rating(self):
+    #     loc = self.locate_on_screen("photos/fight/common/congrats.png", confidence=0.8)
+    #     critter_name = "--"
+    #     rating = "N"
+    #     if loc:
+    #         crit_name = (loc[0] + 90, loc[1] +75, loc[0] + 305, loc[1] +103)
+    #         crit_name_image = ImageGrab.grab(bbox=crit_name)
+    #         # crit_name_image.show()
+    #         crit_name_config = r'--psm 7 -c tessedit_char_whitelist=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    #         critter_name = self.detect_text(crit_name_image, crit_name_config)
 
+    #         rating_box = (loc[0] + 90, loc[1] +101, loc[0] + 305, loc[1] +125)
+    #         rating_box_image = ImageGrab.grab(bbox=rating_box)
+    #         # rating_box_image.show()
+    #         scale = 2
+    #         scaled = rating_box_image.resize((rating_box_image.width * scale, rating_box_image.height * scale))
+    #         gray_scaled = scaled.convert("L")
+    #         sharpened_scaled = gray_scaled.filter(ImageFilter.SHARPEN)
+    #         sharpened_scaled = sharpened_scaled.filter(ImageFilter.SHARPEN)
+    #         sharpened_scaled = sharpened_scaled.filter(ImageFilter.SHARPEN)
+    #         inverted_scaled = ImageOps.invert(sharpened_scaled)
+    #         rating_config = r'--psm 7 -c tessedit_char_whitelist=RatingABCDFS:+'
+    #         inverted_scaled.show()
+    #         rating = pytesseract.image_to_string(inverted_scaled, config=rating_config)
+            
+    #         # rating = pytesseract.image_to_string(rating_box_image, config=rating_config)
+            
+    #         # rating = self.detect_text(rating_box_image, rating_config)
+    #         # import re
+    #         # match = re.search(r'Rating:?\s*([ABCDFS]\+?)', rating)
+    #         # if match:
+    #         #     rating = match.group(1)
+    #         #     print("Parsed rating:", rating)
+    #         # else:
+    #         #     print("Could not detect rating.")
+
+    #         return ''.join(critter_name.split()), rating
+
+    #     print("not found captured crit name image!")
+    #     return critter_name

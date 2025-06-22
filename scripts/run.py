@@ -1,6 +1,7 @@
 from fight import MiscritsBot
 from notifier import Notifier
 from human_mouse import HumanMouse
+from fight_info import FightInfo
 
 
 # dark_poltergust_offset_coords = (175, -40)
@@ -8,17 +9,20 @@ from human_mouse import HumanMouse
 # woolly_offset_coords = (-460,380)
 
 
-notifier = Notifier()
-bot = MiscritsBot(search_crit="f_vhisp",
-                  trainer_crit="papa",
-                  notifier=notifier,
-                  plat_training=False,
-                  plat_capture_attempts=0)
+# notifier = Notifier()
+# bot = MiscritsBot(search_crit="b_flowerpiller",
+#                   trainer_crit="papa",
+#                   notifier=notifier,
+#                   plat_training=False,
+#                   plat_capture_attempts=2)
 
-bot.main_loop()
+# bot.main_loop()
 
 # ----------------------
 
+# fi = FightInfo()
+# captured_name = fi.get_captured_crit_name_and_rating()
+# print(captured_name)
 # import os
 # print(os.getcwd())
 # if os.path.exists("photos/fight/d_slithero"):
@@ -27,7 +31,16 @@ bot.main_loop()
 #     print("File does not exist.")
 
 # import random
+import time 
 
+while True:
+    loc = HumanMouse.locate_on_screen("photos/fight/common/capture.png")
+    if loc:
+        print("found capture!")
+    else:
+        print("not found capture!")
+    time.sleep(0.1)
+    
 # loc = HumanMouse.locate_on_screen("photos/fight/munkee/ref.png")
 # if loc:
 #     loc = (loc[0] + -250 + random.randint(-2, 2), loc[1] + -35 + random.randint(-2, 2))

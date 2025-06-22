@@ -6,19 +6,19 @@ pyautogui.FAILSAFE = False
 class HumanMouse:
     @staticmethod
     def move_to(loc, x_off=0, y_off=0):
-        pyautogui.moveTo(loc, duration=0.01, tween=pyautogui.easeInOutQuad)
-        pyautogui.moveRel(x_off, y_off, duration=0.01, tween=pyautogui.easeInOutQuad)
+        pyautogui.moveTo(loc, duration=0.1, tween=pyautogui.easeInOutQuad)
+        pyautogui.moveRel(x_off, y_off, duration=0.05, tween=pyautogui.easeInOutQuad)
 
     @staticmethod
     def random_move(x=0, y=0):
-        pyautogui.moveRel(x, y, duration=0.01, tween=pyautogui.easeInOutQuad)
+        pyautogui.moveRel(x, y, duration=0.05, tween=pyautogui.easeInOutQuad)
 
     @staticmethod
     def click():
         pyautogui.mouseDown()
         time.sleep(0.01)
         pyautogui.mouseUp()
-        time.sleep(0.01) # TODO: OPTIMIZE, 0.3 seems too much.
+        time.sleep(0.05) # TODO: OPTIMIZE, 0.3 seems too much.
 
     @staticmethod
     def locate_on_screen(template_path, confidence=0.8):
