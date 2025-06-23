@@ -4,13 +4,8 @@ from human_mouse import HumanMouse
 from fight_info import FightInfo
 
 
-# dark_poltergust_offset_coords = (175, -40)
-# dark_slithero_offset_coords = (-100, 200)
-# woolly_offset_coords = (-460,380)
-
-
 notifier = Notifier()
-bot = MiscritsBot(search_crit="nessy",
+bot = MiscritsBot(search_crit="b_flowerpiller",
                   trainer_crit="papa",
                   notifier=notifier,
                   plat_training=False,

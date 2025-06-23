@@ -43,7 +43,7 @@ class FightInfo:
             if self.locate_on_screen(template_path, confidence=0.8):
                 return tier_name
 
-        return "NA/F-"
+        return "N"
 
     def get_capture_chance(self):
         _, chance = self.get_capture_chance_and_crit_name(name=False)
@@ -73,10 +73,10 @@ class FightInfo:
                 if not capture_chance:
                     capture_chance = "0"
 
-            return critter_name, capture_chance
+            return ''.join(critter_name.split()), capture_chance
         
         print("not found capture!")
-        return critter_name, capture_chance
+        return ''.join(critter_name.split()), capture_chance
     
     # def get_captured_crit_name_and_rating(self):
     #     loc = self.locate_on_screen("photos/fight/common/congrats.png", confidence=0.8)

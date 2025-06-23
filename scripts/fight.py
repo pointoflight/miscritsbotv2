@@ -81,8 +81,8 @@ class MiscritsBot:
 
     def notify_if_found(self, crit_name, crit_tier="N"):
         if self.crit_name_match(crit_name):
-            print(crit_tier + " " + crit_name + "⚠️ " + self.search_crit + " encountered!")
-            for _ in range(3):
+            print("84 " + crit_tier + " " + crit_name + "⚠️ " + self.search_crit + " Encountered!")
+            for _ in range(60):
                 if self.notifier:
                     self.notifier.send_telegram("⚠️ " + crit_tier + " " + self.search_crit + " encountered!")
                 time.sleep(1)
@@ -159,15 +159,23 @@ class MiscritsBot:
             turn_ret = self.look_for_fight_over_or_not(self.my_turn, "photos/fight/common/fight_continue.png")
 
             if turn_ret == 'my_turn':
+                print("!! my turn")
+
+                print("!! getting capture chance and crit_name")
                 crit_name, capture_chance = self.fight_info.get_capture_chance_and_crit_name()
+                print("!! got capture chance and crit_name = ", crit_name, capture_chance)
                 crit_tier = self.fight_info.get_tier()
-                found = self.notify_if_found(crit_name, crit_tier)
+                found = self.notify_if_found(crit_name, crit_tier=crit_tier)
                 if not crit_name:
                     crit_name = "--"
-                print(crit_tier + " " + ''.join(crit_name.split()) + " " + capture_chance + "%" + " encountered!")
 
+                # time.sleep(2)
+                print("171 " + crit_tier + " " + crit_name + " " + capture_chance + "%" + " encountered!")
+                # time.sleep(2)
 
                 print("before deciding to capture/attack: ", crit_tier, found, capture_chance, capture_attempts)
+                # time.sleep(2)
+
                 if (crit_tier in ["A+", "S+", "S"] and int(capture_chance) >= 80 and capture_attempts == 0 and not found) or \
                     (found and int(capture_chance) >= 50 and capture_attempts - 1 < self.plat_capture_attempts):
                     capture_button = HumanMouse.locate_on_screen("photos/fight/common/capture.png", confidence=0.8)
@@ -195,6 +203,7 @@ class MiscritsBot:
                     HumanMouse.move_to(attack_move, 0, 0)
                     HumanMouse.click()
                     HumanMouse.move_to(attack_move, 0, -200)
+                    time.sleep(2)
             else:
                 fight_complete = self.look_for_target_until_found("photos/fight/common/fight_continue.png")
                 time.sleep(1.5) # TODO: maybe a little optimize. necessary to wait though as it takes time to appear.
