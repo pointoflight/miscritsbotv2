@@ -10,11 +10,11 @@ from fight_info import FightInfo
 
 
 notifier = Notifier()
-bot = MiscritsBot(search_crit="f_flintly",
+bot = MiscritsBot(search_crit="nessy",
                   trainer_crit="papa",
                   notifier=notifier,
                   plat_training=False,
-                  plat_capture_attempts=1)
+                  plat_capture_attempts=0)
 
 bot.main_loop()
 

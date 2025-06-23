@@ -13,6 +13,7 @@ offset_coords = {
     "boneshee": (250, 80),
     "d_elefauna": (-170, 300),
     "b_flowerpiller": (-5, 105),
+    "nessy": (-5, 105),
     "d_treemur": (325, 150),
     "sledgehog": (100, 270),
     "f_flintly": (-150, -20),
@@ -28,6 +29,7 @@ name_searches = {
     "boneshee": ["Bo", "on", "ee"],
     "d_elefauna": ["El", "f"],
     "b_flowerpiller": ["B", "ted"],
+    "nessy": ["N", "ss", "S", "Tw", "Sq"],
     "d_treemur": ["T", "mu", "ur"],
     "sledgehog": ["S", "ho"],
     "f_flintly": ["Fo"],
@@ -77,25 +79,18 @@ class MiscritsBot:
                     return True
         return False
 
-    def notify_if_found(self, crit_name):
+    def notify_if_found(self, crit_name, crit_tier="N"):
         if self.crit_name_match(crit_name):
-            print(crit_name + "⚠️ " + self.search_crit + " encountered!")
-            for _ in range(300):
+            print(crit_tier + " " + crit_name + "⚠️ " + self.search_crit + " encountered!")
+            for _ in range(3):
                 if self.notifier:
-                    self.notifier.send_telegram("⚠️ " + self.search_crit + " encountered!")
+                    self.notifier.send_telegram("⚠️ " + crit_tier + " " + self.search_crit + " encountered!")
                 time.sleep(1)
             return True
         return False
 
     def look_for_fight_over_or_not(self, my_turn_path, fight_complete_path, confidence=0.8):
         while True:
-            # crit_name, capture_chance = self.fight_info.get_capture_chance_and_crit_name()
-            # found = self.notify_if_found(crit_name)
-
-            # crit_tier = self.fight_info.get_tier()
-            # if not crit_name:
-            #     crit_name = "--"
-            # print(crit_tier + " " + ''.join(crit_name.split()) + " " + capture_chance + "%" + " encountered!")
 
             my_turn = HumanMouse.locate_on_screen(my_turn_path, confidence)
             fight_complete = HumanMouse.locate_on_screen(fight_complete_path, confidence)
@@ -165,12 +160,14 @@ class MiscritsBot:
 
             if turn_ret == 'my_turn':
                 crit_name, capture_chance = self.fight_info.get_capture_chance_and_crit_name()
-                found = self.notify_if_found(crit_name)
                 crit_tier = self.fight_info.get_tier()
+                found = self.notify_if_found(crit_name, crit_tier)
                 if not crit_name:
                     crit_name = "--"
                 print(crit_tier + " " + ''.join(crit_name.split()) + " " + capture_chance + "%" + " encountered!")
 
+
+                print("before deciding to capture/attack: ", crit_tier, found, capture_chance, capture_attempts)
                 if (crit_tier in ["A+", "S+", "S"] and int(capture_chance) >= 80 and capture_attempts == 0 and not found) or \
                     (found and int(capture_chance) >= 50 and capture_attempts - 1 < self.plat_capture_attempts):
                     capture_button = HumanMouse.locate_on_screen("photos/fight/common/capture.png", confidence=0.8)
