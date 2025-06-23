@@ -18,7 +18,8 @@ offset_coords = {
     "sledgehog": (100, 270),
     "f_flintly": (-150, -20),
     "d_flutter": (180, -100),
-    "munkee": (-250, -35)
+    "munkee": (-250, -35),
+    "ursiwave": (-70, 250)
 }
 
 name_searches = {
@@ -34,7 +35,8 @@ name_searches = {
     "sledgehog": ["S", "ho"],
     "f_flintly": ["Fo"],
     "d_flutter": ["F", "tt", "ut"],
-    "munkee": ["M", "K"]
+    "munkee": ["M", "K"],
+    "ursiwave": ["U", "rs"]
 }
 
 

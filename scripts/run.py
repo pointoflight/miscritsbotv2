@@ -5,11 +5,11 @@ from fight_info import FightInfo
 
 
 notifier = Notifier()
-bot = MiscritsBot(search_crit="b_flowerpiller",
+bot = MiscritsBot(search_crit="ursiwave",
                   trainer_crit="papa",
                   notifier=notifier,
-                  plat_training=False,
-                  plat_capture_attempts=0)
+                  plat_training=True,
+                  plat_capture_attempts=1)
 
 bot.main_loop()
 
@@ -36,7 +36,7 @@ bot.main_loop()
 #         print("not found capture!")
 #     time.sleep(0.1)
 
-# loc = HumanMouse.locate_on_screen("photos/fight/munkee/ref.png")
+# loc = HumanMouse.locate_on_screen("photos/fight/ursiwave/ref.png")
 # if loc:
-#     loc = (loc[0] + -250 + random.randint(-2, 2), loc[1] + -35 + random.randint(-2, 2))
+#     loc = (loc[0] + -70 + random.randint(-2, 2), loc[1] + 250 + random.randint(-2, 2))
 #     HumanMouse.move_to(loc, random.randint(0, 10), random.randint(-10, 0))
