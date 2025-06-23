@@ -1,9 +1,10 @@
 import requests
 
 class Notifier:
-    def __init__(self, telegram_token='7763910278:AAFqZoJsJbo0wVnIYN-INR-jC5WO9WhBiXk', telegram_chat_id='5817560823'):
+    def __init__(self, telegram_token='7763910278:AAFqZoJsJbo0wVnIYN-INR-jC5WO9WhBiXk', telegram_chat_id='5817560823', num_notifs=60):
         self.telegram_token = telegram_token
         self.telegram_chat_id = telegram_chat_id
+        self.num_notifs = num_notifs
 
     def send_telegram(self, message):
         if not self.telegram_token or not self.telegram_chat_id:
