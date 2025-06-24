@@ -56,6 +56,7 @@ class MiscritsBot:
         self.plat_capture_attempts = plat_capture_attempts
         self.fight_info = FightInfo()
         self.rs_captured = 0
+        self.ars_captured = 0
         self.sp_captured = 0
         self.scrits_captured = 0
         self.ap_reds = 0
@@ -181,7 +182,7 @@ class MiscritsBot:
                 print("before deciding to capture/attack: ", crit_tier, crit_name, "found=", found, capture_chance, "%", "capture attempts = ", capture_attempts)
                 # time.sleep(2)
 
-                if (crit_tier in ["A+", "S+", "S"] and int(capture_chance) >= 80 and capture_attempts == 0 and not found) or \
+                if (crit_tier in ["A", "A+", "S+", "S"] and int(capture_chance) >= 80 and capture_attempts == 0 and not found) or \
                     (found and int(capture_chance) >= 50 and capture_attempts - 1 < self.plat_capture_attempts):
                     capture_button = HumanMouse.locate_on_screen("photos/fight/common/capture.png", confidence=0.8)
                     if capture_button:
@@ -236,20 +237,24 @@ class MiscritsBot:
                 # print("before keep/release: ")
                 # print("fight_tier =", fight_tier)
 
-                rs_cap = HumanMouse.locate_on_screen("photos/fight/common/RS.png", confidence=0.99)
+                rs_cap = HumanMouse.locate_on_screen("photos/fight/common/RS6.png", confidence=0.99) or \
+                    HumanMouse.locate_on_screen("photos/fight/common/RS7.png", confidence=0.99)
                 ap_red = fight_tier == "A+" and HumanMouse.locate_on_screen("photos/fight/common/red.png")
                 if fight_crit_found:
                     self.scrits_captured += 1
-                    self.notifier.send_telegram("⚠️ search crit CAPTURED!")
+                    # self.notifier.send_telegram("⚠️ search crit CAPTURED!")
                 elif rs_cap:
-                    self.rs_captured += 1
-                    self.notifier.send_telegram("RS CAPTURED!")
+                    if fight_tier == "A+":
+                        self.rs_captured += 1
+                    else:
+                        self.ars_captured += 1
+                    # self.notifier.send_telegram("RS CAPTURED!")
                 elif fight_tier == "S+":
                     self.sp_captured += 1
-                    self.notifier.send_telegram("S+ CAPTURED!")
+                    # self.notifier.send_telegram("S+ CAPTURED!")
                 elif ap_red:
                     self.ap_reds += 1
-                    self.notifier.send_telegram("A+ red CAPTURED!")
+                    # self.notifier.send_telegram("A+ red CAPTURED!")
 
                 if rs_cap or fight_crit_found or fight_tier in ["S+", "S"] or ap_red:
                     keep = HumanMouse.locate_on_screen("photos/fight/common/keep.png")
@@ -320,7 +325,7 @@ class MiscritsBot:
                 HumanMouse.click()
                 time.sleep(1)
                 self.levels_up += 1
-                self.notifier.send_telegram("LEVEL UP! total levels = " + str(self.levels_up))
+                # self.notifier.send_telegram("LEVEL UP! total levels = " + str(self.levels_up))
 
                 if HumanMouse.locate_on_screen("photos/fight/common/new_abilities.png"):
                     cont = self.look_for_target_until_found("photos/fight/common/abilities_continue.png")
@@ -347,7 +352,7 @@ class MiscritsBot:
                     HumanMouse.click()
                     time.sleep(1)
 
-            print("search crits: ", self.scrits_captured, "RS : ", self.rs_captured, "S+ : ", self.sp_captured, \
-                  "A+ reds: ", self.ap_reds, "levels trained: ", self.levels_up)
+            print("search crits:", self.scrits_captured, "RS:", self.rs_captured, "aRS:", self.ars_captured, \
+                  "S+:", self.sp_captured, "A+ reds:", self.ap_reds, "levels up:", self.levels_up)
             
             HumanMouse.random_move(x=random.randint(-400, -100), y=random.randint(-400, -100))

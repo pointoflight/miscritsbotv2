@@ -4,13 +4,13 @@ from human_mouse import HumanMouse
 from fight_info import FightInfo
 
 
-notifier = Notifier(num_notifs=10)
+notifier = Notifier(num_notifs=50)
 
 bot = MiscritsBot(search_crit="gog",
                   trainer_crit="papa",
                   notifier=notifier,
                   plat_training=True,
-                  plat_capture_attempts=1)
+                  plat_capture_attempts=0)
 
 bot.main_loop()
 
