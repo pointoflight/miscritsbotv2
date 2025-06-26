@@ -21,7 +21,8 @@ offset_coords = {
     "munkee": (-250, -35),
     "ursiwave": (-70, 250),
     "gog": (-40, 325),
-    "l_twiggum": (0, 0)
+    "l_twiggum": (0, 0),
+    "eggy": (110, 200)
 }
 
 name_searches = {
@@ -40,7 +41,8 @@ name_searches = {
     "munkee": ["M", "K"],
     "ursiwave": ["U", "rs"],
     "gog": ["G"],
-    "l_twiggum": ["T", "L"]
+    "l_twiggum": ["T", "L"],
+    "eggy": []
 }
 
 
@@ -305,8 +307,8 @@ class MiscritsBot:
                 HumanMouse.move_to(train, 0, 0)
                 HumanMouse.click()
 
-                trainer_crit_loc = self.look_for_target_until_found("photos/fight/common/" + self.trainer_crit + ".png")
-                HumanMouse.move_to(trainer_crit_loc, 40, 60)
+                trainer_crit_loc = self.look_for_target_until_found("photos/fight/common/ready_to_train_box.png")
+                HumanMouse.move_to(trainer_crit_loc, 0, 0)
                 HumanMouse.click()
 
                 train_now = self.look_for_target_until_found("photos/fight/common/train_now.png")
