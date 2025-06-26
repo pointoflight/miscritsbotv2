@@ -6,15 +6,28 @@ from fight_info import FightInfo
 
 notifier = Notifier(num_notifs=50)
 
-bot = MiscritsBot(search_crit="gog",
+bot = MiscritsBot(search_crit="b_flowerpiller",
                   trainer_crit="papa",
                   notifier=notifier,
-                  plat_training=True,
+                  plat_training=False,
                   plat_capture_attempts=0)
 
 bot.main_loop()
 
 # ----------------------
+
+# import pyautogui
+# import time
+
+# print("Move your mouse. Press Ctrl+C to stop.\n")
+
+# try:
+#     while True:
+#         x, y = pyautogui.position()
+#         print(f"X: {x}, Y: {y}", end='\r')  # Overwrites same line
+#         time.sleep(0.05)  # Adjust refresh rate as needed
+# except KeyboardInterrupt:
+#     print("\nStopped.")
 
 # fi = FightInfo()
 # captured_name = fi.get_captured_crit_name_and_rating()

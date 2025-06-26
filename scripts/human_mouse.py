@@ -1,5 +1,6 @@
 import pyautogui
 import time
+import math
 
 pyautogui.FAILSAFE = False
 
@@ -24,6 +25,23 @@ class HumanMouse:
     def locate_on_screen(template_path, confidence=0.8):
         location = pyautogui.locateCenterOnScreen(template_path, confidence=confidence)
         return location
+    
+    @staticmethod
+    def locate_all_on_screen(template_path, min_distance=60, confidence=0.8):
+        # Find all raw matches
+        matches = list(pyautogui.locateAllOnScreen(template_path, confidence=confidence))
+
+        # Get centers and filter
+        unique_centers = []
+
+        for match in matches:
+            center = pyautogui.center(match)
+            
+            # Check distance to all previously stored centers
+            if all(math.dist(center, existing) > min_distance for existing in unique_centers):
+                unique_centers.append(center)
+
+        return unique_centers
     
     @staticmethod
     def smooth_drag(start_pos, offset_x, offset_y):
