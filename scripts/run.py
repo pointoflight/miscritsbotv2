@@ -6,10 +6,11 @@ from fight_info import FightInfo
 
 notifier = Notifier(num_notifs=50)
 
-bot = MiscritsBot(search_crit="b_flowerpiller",
+bot = MiscritsBot(search_crit="l_twiggum",
                   trainer_crit="papa",
                   notifier=notifier,
-                  plat_training=False,
+                  plat_training=True,
+                  capture_tiers=[],
                   plat_capture_attempts=0)
 
 bot.main_loop()
@@ -52,7 +53,7 @@ bot.main_loop()
 
 # import random
 
-# loc = HumanMouse.locate_on_screen("photos/fight/gog/ref.png")
+# loc = HumanMouse.locate_on_screen("photos/fight/l_twiggum/ref.png")
 # if loc:
-#     loc = (loc[0] + -40 + random.randint(-2, 2), loc[1] + 325 + random.randint(-2, 2))
+#     loc = (loc[0] + -0 + random.randint(-2, 2), loc[1] + 0 + random.randint(-2, 2))
 #     HumanMouse.move_to(loc, random.randint(0, 10), random.randint(-10, 0))

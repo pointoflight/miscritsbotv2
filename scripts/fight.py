@@ -20,7 +20,8 @@ offset_coords = {
     "d_flutter": (180, -100),
     "munkee": (-250, -35),
     "ursiwave": (-70, 250),
-    "gog": (-40, 325)
+    "gog": (-40, 325),
+    "l_twiggum": (0, 0)
 }
 
 name_searches = {
@@ -35,15 +36,16 @@ name_searches = {
     "d_treemur": ["T", "mu", "ur"],
     "sledgehog": ["S", "ho"],
     "f_flintly": ["Fo"],
-    "d_flutter": ["F", "tt", "ut"],
+    "d_flutter": ["F", "ut"],
     "munkee": ["M", "K"],
     "ursiwave": ["U", "rs"],
-    "gog": ["G"]
+    "gog": ["G"],
+    "l_twiggum": ["T", "L"]
 }
 
 
 class MiscritsBot:
-    def __init__(self, search_crit, trainer_crit, notifier=None, plat_training=False, plat_capture_attempts=0):
+    def __init__(self, search_crit, trainer_crit, notifier=None, plat_training=False, capture_tiers=["B+", "A", "A+", "S+", "S"], plat_capture_attempts=0):
         self.notifier = notifier
         self.trainer_crit = trainer_crit
         self.search_crit = search_crit
@@ -61,6 +63,7 @@ class MiscritsBot:
         self.scrits_captured = 0
         self.ap_reds = 0
         self.levels_up = 0
+        self.capture_tiers = capture_tiers
 
     def look_for_target_until_found(self, target_path, confidence=0.8):
         count, stop = 0, 0
@@ -182,7 +185,7 @@ class MiscritsBot:
                 print("before deciding to capture/attack: ", crit_tier, crit_name, "found=", found, capture_chance, "%", "capture attempts = ", capture_attempts)
                 # time.sleep(2)
 
-                if (crit_tier in ["B+", "A", "A+", "S+", "S"] and int(capture_chance) >= 80 and capture_attempts == 0 and not found) or \
+                if (crit_tier in self.capture_tiers and int(capture_chance) >= 80 and capture_attempts == 0 and not found) or \
                     (found and int(capture_chance) >= 50 and capture_attempts - 1 < self.plat_capture_attempts):
                     capture_button = HumanMouse.locate_on_screen("photos/fight/common/capture.png", confidence=0.8)
                     if capture_button:
