@@ -22,7 +22,7 @@ offset_coords = {
     "ursiwave": (-70, 250),
     "gog": (-40, 325),
     "l_twiggum": (0, 0),
-    "eggy": (110, 200)
+    "eggy": (-160, 70)
 }
 
 name_searches = {
@@ -223,6 +223,54 @@ class MiscritsBot:
                 HumanMouse.click()
                 return is_ready_to_train, found, crit_tier
 
+    def train_crit(self, crit):
+        HumanMouse.move_to(crit, 0, 0)
+        HumanMouse.click()
+
+        train_now = self.look_for_target_until_found("photos/fight/common/train_now.png")
+        HumanMouse.move_to(train_now, 0, 0)
+        HumanMouse.click()
+
+        if self.plat_training:
+            time.sleep(1) # TODO: optimize, maybe no sleep needed.
+            plat_train = self.look_for_target_until_found("photos/fight/common/plat_train.png")
+            HumanMouse.move_to(plat_train, 0, 0)
+            time.sleep(1) # TODO: optimize, maybe no sleep needed.
+            HumanMouse.click()
+            time.sleep(0.5) # TODO: optimize, maybe no sleep needed.
+            plat_train = HumanMouse.locate_on_screen("photos/fight/common/plat_train.png")
+            if plat_train:
+                HumanMouse.move_to(plat_train, 0, 0)
+                HumanMouse.click()
+            time.sleep(2)
+
+        # print("self.plat_training = ", self.plat_training)
+        time.sleep(1)
+        train_continue_button = self.look_for_target_until_found("photos/fight/common/train_continue.png")
+        # print("!!! moving to train continue")
+        HumanMouse.move_to(train_continue_button, 0, 0)
+        time.sleep(0.1)
+        HumanMouse.click()
+        time.sleep(0.1)
+        HumanMouse.click()
+        time.sleep(1)
+        self.levels_up += 1
+        # self.notifier.send_telegram("LEVEL UP! total levels = " + str(self.levels_up))
+
+        if HumanMouse.locate_on_screen("photos/fight/common/new_abilities.png"):
+            cont = self.look_for_target_until_found("photos/fight/common/abilities_continue.png")
+            HumanMouse.move_to(cont, 0, 0)
+            HumanMouse.click()
+            time.sleep(2)
+
+        if HumanMouse.locate_on_screen("photos/fight/common/evolved.png"):
+            time.sleep(0.5) # TODO: not needed? why wait to click okay after already found? but only evolves 3 times max so only 1.5 seconds to be saved.
+            eokay = self.look_for_target_until_found("photos/fight/common/evolved_okay.png")
+            HumanMouse.move_to(eokay, 0, 0)
+            HumanMouse.click()
+            time.sleep(1) # TODO: optimize?
+
+        
     def main_loop(self):
         while True:
             is_ready_to_train, fight_crit_found, fight_tier = self.fight_on_location(self.crit_ref)
@@ -269,14 +317,15 @@ class MiscritsBot:
                     self.ap_reds += 1
                     # self.notifier.send_telegram("A+ red CAPTURED!")
 
-                if (rs and (abprs or fight_tier == "A+")) or fight_crit_found or \
-                fight_tier in ["S+", "S"] or ap_red:
+                if (rs and (abprs or fight_tier == "A+")) or fight_crit_found: # or fight_tier in ["S+", "S"] or ap_red:
                     keep = HumanMouse.locate_on_screen("photos/fight/common/keep.png")
                     if keep:
                         HumanMouse.move_to(keep, 0, 0)
                         HumanMouse.click()
                         if fight_crit_found:
                             self.notifier.send_telegram(":) " + fight_tier + " " + self.search_crit + " CAPTURED!")
+                        
+                        # if False: # TODO: add feature to move crit into inventory if in team after capture.
                         my_crits = HumanMouse.locate_on_screen("photos/fight/common/my_miscrits.png")
                         if my_crits:
                             HumanMouse.move_to(my_crits, 0, 0)
@@ -306,65 +355,27 @@ class MiscritsBot:
                 train = self.look_for_target_until_found("photos/fight/common/train.png")
                 HumanMouse.move_to(train, 0, 0)
                 HumanMouse.click()
-
-                trainer_crit_loc = self.look_for_target_until_found("photos/fight/common/ready_to_train_box.png")
-                HumanMouse.move_to(trainer_crit_loc, 0, 0)
-                HumanMouse.click()
-
-                train_now = self.look_for_target_until_found("photos/fight/common/train_now.png")
-                HumanMouse.move_to(train_now, 0, 0)
-                HumanMouse.click()
-
-                if self.plat_training:
-                    time.sleep(1) # TODO: optimize, maybe no sleep needed.
-                    plat_train = self.look_for_target_until_found("photos/fight/common/plat_train.png")
-                    HumanMouse.move_to(plat_train, 0, 0)
-                    time.sleep(1) # TODO: optimize, maybe no sleep needed.
-                    HumanMouse.click()
-                    time.sleep(0.5) # TODO: optimize, maybe no sleep needed.
-                    plat_train = HumanMouse.locate_on_screen("photos/fight/common/plat_train.png")
-                    if plat_train:
-                        HumanMouse.move_to(plat_train, 0, 0)
-                        HumanMouse.click()
-                    time.sleep(2)
-
-                # print("self.plat_training = ", self.plat_training)
-                time.sleep(1)
-                train_continue_button = self.look_for_target_until_found("photos/fight/common/train_continue.png")
-                # print("!!! moving to train continue")
-                HumanMouse.move_to(train_continue_button, 0, 0)
                 time.sleep(0.1)
-                HumanMouse.click()
-                time.sleep(0.1)
-                HumanMouse.click()
-                time.sleep(1)
-                self.levels_up += 1
-                # self.notifier.send_telegram("LEVEL UP! total levels = " + str(self.levels_up))
-
-                if HumanMouse.locate_on_screen("photos/fight/common/new_abilities.png"):
-                    cont = self.look_for_target_until_found("photos/fight/common/abilities_continue.png")
-                    HumanMouse.move_to(cont, 0, 0)
-                    HumanMouse.click()
-                    time.sleep(2)
-
-                if HumanMouse.locate_on_screen("photos/fight/common/evolved.png"):
-                    time.sleep(0.5) # TODO: not needed? why wait to click okay after already found? but only evolves 3 times max so only 1.5 seconds to be saved.
-                    eokay = self.look_for_target_until_found("photos/fight/common/evolved_okay.png")
-                    HumanMouse.move_to(eokay, 0, 0)
-                    HumanMouse.click()
-                    time.sleep(1) # TODO: optimize?
+                train_crits = HumanMouse.locate_all_on_screen(
+                    "photos/fight/common/ready_to_train_box.png", min_distance=40, confidence=0.6)
+                print("!! train crits length:", len(train_crits))
+                for crit in train_crits:
+                    self.train_crit(crit)
 
                 cross = self.look_for_target_until_found("photos/fight/common/cross.png")
                 HumanMouse.move_to(cross, 0, 0)
                 HumanMouse.click()
 
-                time.sleep(0.5)
-                if HumanMouse.locate_on_screen("photos/fight/common/rank_up.png"):
-                    time.sleep(0.5) # TODO: same here, max 3 times. 
-                    ruokay = self.look_for_target_until_found("photos/fight/common/rankup_okay.png")
-                    HumanMouse.move_to(ruokay, 0, 0)
-                    HumanMouse.click()
-                    time.sleep(1)
+                for _ in range(3):
+                    time.sleep(0.5)
+                    if HumanMouse.locate_on_screen("photos/fight/common/rank_up.png"):
+                        time.sleep(0.5) # TODO: same here, max 3 times. 
+                        ruokay = self.look_for_target_until_found("photos/fight/common/rankup_okay.png")
+                        HumanMouse.move_to(ruokay, 0, 0)
+                        HumanMouse.click()
+                        time.sleep(1)
+                    else:
+                        break
 
             print("search crits:", self.scrits_captured, "RS:", self.rs_captured, "a/b+ RS:", self.abprs_captured, \
                   "S+:", self.sp_captured, "A+ reds:", self.ap_reds, "levels up:", self.levels_up)

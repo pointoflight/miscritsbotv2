@@ -30,7 +30,8 @@ class HumanMouse:
     def locate_all_on_screen(template_path, min_distance=60, confidence=0.8):
         # Find all raw matches
         matches = list(pyautogui.locateAllOnScreen(template_path, confidence=confidence))
-
+        centers = [pyautogui.center(match) for match in matches]
+        print("centers:", centers)
         # Get centers and filter
         unique_centers = []
 
@@ -41,6 +42,7 @@ class HumanMouse:
             if all(math.dist(center, existing) > min_distance for existing in unique_centers):
                 unique_centers.append(center)
 
+        print("!! unique_centers:", unique_centers)
         return unique_centers
     
     @staticmethod

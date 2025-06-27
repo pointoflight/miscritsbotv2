@@ -10,7 +10,7 @@ bot = MiscritsBot(search_crit="eggy",
                   trainer_crit="papa",
                   notifier=notifier,
                   plat_training=True,
-                  capture_tiers=[],
+                  capture_tiers=["B+", "A", "A+"],
                   plat_capture_attempts=0)
 
 bot.main_loop()
@@ -42,20 +42,28 @@ bot.main_loop()
 
 
 # import time 
+# import pyautogui
 
-# while True:
-#     loc = HumanMouse.locate_on_screen("photos/fight/common/capture.png")
-#     if loc:
-#         print("found capture!")
-#     else:
-#         print("not found capture!")
-#     time.sleep(0.1)
+# # while True:
+# train_crits = HumanMouse.locate_all_on_screen("photos/fight/common/ready_to_train_box.png", min_distance=40, confidence=0.6)
+# # centers = [pyautogui.center(crit) for crit in train_crits]
+
+# print("!! train crits:", train_crits)
+
+# for train_crit in train_crits:
+#     HumanMouse.move_to(train_crit)
+#     time.sleep(0.5)
+# if loc:
+#     print("found capture!")
+# else:
+#     print("not found capture!")
+# time.sleep(0.1)
 
 # import random
 
-# loc = HumanMouse.locate_on_screen("photos/fight/common/ready_to_train_box.png")
+# loc = HumanMouse.locate_on_screen("photos/fight/eggy/ref.png")
 # if loc:
-#     loc = (loc[0] + 0 + random.randint(-2, 2), loc[1] + 0 + random.randint(-2, 2))
-#     HumanMouse.move_to(loc, random.randint(0, 10), random.randint(-10, 0))
+#     loc = (loc[0] + -160 + random.randint(-2, 2), loc[1] + 70 + random.randint(-2, 2))
+#     HumanMouse.move_to(loc) # random.randint(0, 10), random.randint(-10, 0))
 # else:
 #     print("not found")
