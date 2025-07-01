@@ -22,7 +22,11 @@ offset_coords = {
     "ursiwave": (-70, 250),
     "gog": (-40, 325),
     "l_twiggum": (0, 0),
-    "eggy": (-160, 70)
+    "eggy": (-160, 70),
+    "winne": (-260, -70),
+    "peepsie": (-50, 180),
+    "b_flue": (-50, 190),
+    "dorux": (-70, 200)
 }
 
 name_searches = {
@@ -42,7 +46,11 @@ name_searches = {
     "ursiwave": ["U", "rs"],
     "gog": ["G"],
     "l_twiggum": ["T", "L"],
-    "eggy": []
+    "eggy": [],
+    "winne": ["Wi", "Wl"],
+    "peepsie": ["P", "ee"],
+    "b_flue": ["B"],
+    "dorux": ["rux", "x"]
 }
 
 
@@ -65,6 +73,7 @@ class MiscritsBot:
         self.scrits_captured = 0
         self.ap_reds = 0
         self.levels_up = 0
+        self.tries = 0
         self.capture_tiers = capture_tiers
 
     def look_for_target_until_found(self, target_path, confidence=0.8):
@@ -163,7 +172,7 @@ class MiscritsBot:
             time.sleep(17)
             return False, None, None
 
-
+        self.tries += 1
         capture_attempts = 0
         crit_name = '--'
         capture_chance = "0"
@@ -290,16 +299,18 @@ class MiscritsBot:
                 # print("before keep/release: ")
                 # print("fight_tier =", fight_tier)
 
-                rs = HumanMouse.locate_on_screen("photos/fight/common/RS6.png", confidence=0.99) or \
-                    HumanMouse.locate_on_screen("photos/fight/common/RS7.png", confidence=0.99)
+                rs = HumanMouse.locate_on_screen("photos/fight/common/RS6.png", confidence=0.9) or \
+                    HumanMouse.locate_on_screen("photos/fight/common/RS7.png", confidence=0.9)
                 red_matches = HumanMouse.locate_all_on_screen("photos/fight/common/red.png", 
-                                                              min_distance=60, confidence=0.9)
+                                                              min_distance=30, confidence=0.8)
                 ap_red = fight_tier == "A+" and len(red_matches) == 1
                 abprs = (fight_tier == "A" and len(red_matches) == 1) or \
                     (fight_tier == "B+" and len(red_matches) == 2)
                 
                 print("!! len(red_matches):", len(red_matches))
                 print("red_matches:" , red_matches)
+                print("is RS:" , rs)
+                print("fight_crit_found:", fight_crit_found)
 
                 if fight_crit_found:
                     self.scrits_captured += 1
@@ -325,20 +336,20 @@ class MiscritsBot:
                         if fight_crit_found:
                             self.notifier.send_telegram(":) " + fight_tier + " " + self.search_crit + " CAPTURED!")
                         
-                        # if False: # TODO: add feature to move crit into inventory if in team after capture.
-                        my_crits = HumanMouse.locate_on_screen("photos/fight/common/my_miscrits.png")
-                        if my_crits:
-                            HumanMouse.move_to(my_crits, 0, 0)
-                            HumanMouse.click()
-                            time.sleep(0.3) # TODO: maybe optimize little everywhere not just here. All sleeps.
-                            order_of = HumanMouse.locate_on_screen("photos/fight/common/order_of.png")
-                            if order_of:
-                                order_of = (order_of[0], order_of[1] + 200)
-                                HumanMouse.smooth_drag(order_of, 0, 200)
-                                save = HumanMouse.locate_on_screen("photos/fight/common/save.png")
-                                HumanMouse.move_to(save, 0, 0)
+                        if False: # TODO: add feature to move crit into inventory if in team after capture.
+                            my_crits = HumanMouse.locate_on_screen("photos/fight/common/my_miscrits.png")
+                            if my_crits:
+                                HumanMouse.move_to(my_crits, 0, 0)
                                 HumanMouse.click()
-                                time.sleep(0.8)
+                                time.sleep(0.3) # TODO: maybe optimize little everywhere not just here. All sleeps.
+                                order_of = HumanMouse.locate_on_screen("photos/fight/common/order_of.png")
+                                if order_of:
+                                    order_of = (order_of[0], order_of[1] + 200)
+                                    HumanMouse.smooth_drag(order_of, 0, 200)
+                                    save = HumanMouse.locate_on_screen("photos/fight/common/save.png")
+                                    HumanMouse.move_to(save, 0, 0)
+                                    HumanMouse.click()
+                                    time.sleep(0.8)
                 else:
                     release = HumanMouse.locate_on_screen("photos/fight/common/release.png")
                     if release:
@@ -376,8 +387,8 @@ class MiscritsBot:
                         time.sleep(1)
                     else:
                         break
-
+            
             print("search crits:", self.scrits_captured, "RS:", self.rs_captured, "a/b+ RS:", self.abprs_captured, \
-                  "S+:", self.sp_captured, "A+ reds:", self.ap_reds, "levels up:", self.levels_up)
+                  "S+:", self.sp_captured, "A+ reds:", self.ap_reds, "levels up:", self.levels_up, "tries:", self.tries)
             
             HumanMouse.random_move(x=random.randint(-400, -100), y=random.randint(-400, -100))
