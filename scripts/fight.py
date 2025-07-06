@@ -26,7 +26,11 @@ offset_coords = {
     "winne": (-260, -70),
     "peepsie": (-50, 180),
     "b_flue": (-50, 190),
-    "dorux": (-70, 200)
+    "dorux": (-70, 200),
+    "fangly": (170, 320),
+    "d_spin": (10, 170),
+    "l_bludger": (140, 200),
+    "alpha": (120, 120)
 }
 
 name_searches = {
@@ -50,7 +54,11 @@ name_searches = {
     "winne": ["Wi", "Wl"],
     "peepsie": ["P", "ee"],
     "b_flue": ["B"],
-    "dorux": ["rux", "x"]
+    "dorux": ["rux", "x"],
+    "fangly": ["Fan", "gly"],
+    "d_spin": ["D", "S"],
+    "l_bludger": ["Blud", "ger"],
+    "alpha": ["Al", "ha"]
 }
 
 
@@ -336,20 +344,20 @@ class MiscritsBot:
                         if fight_crit_found:
                             self.notifier.send_telegram(":) " + fight_tier + " " + self.search_crit + " CAPTURED!")
                         
-                        if False: # TODO: add feature to move crit into inventory if in team after capture.
-                            my_crits = HumanMouse.locate_on_screen("photos/fight/common/my_miscrits.png")
-                            if my_crits:
-                                HumanMouse.move_to(my_crits, 0, 0)
-                                HumanMouse.click()
-                                time.sleep(0.3) # TODO: maybe optimize little everywhere not just here. All sleeps.
-                                order_of = HumanMouse.locate_on_screen("photos/fight/common/order_of.png")
-                                if order_of:
-                                    order_of = (order_of[0], order_of[1] + 200)
-                                    HumanMouse.smooth_drag(order_of, 0, 200)
-                                    save = HumanMouse.locate_on_screen("photos/fight/common/save.png")
-                                    HumanMouse.move_to(save, 0, 0)
-                                    HumanMouse.click()
-                                    time.sleep(0.8)
+                        # if False: # TODO: add feature to move crit into inventory if in team after capture.
+                        # my_crits = HumanMouse.locate_on_screen("photos/fight/common/my_miscrits.png")
+                        # if my_crits:
+                        #     HumanMouse.move_to(my_crits, 0, 0)
+                        #     HumanMouse.click()
+                        #     time.sleep(0.3) # TODO: maybe optimize little everywhere not just here. All sleeps.
+                        #     order_of = HumanMouse.locate_on_screen("photos/fight/common/order_of.png")
+                        #     if order_of:
+                        #         order_of = (order_of[0], order_of[1] + 200)
+                        #         HumanMouse.smooth_drag(order_of, 0, 200)
+                        #         save = HumanMouse.locate_on_screen("photos/fight/common/save.png")
+                        #         HumanMouse.move_to(save, 0, 0)
+                        #         HumanMouse.click()
+                        #         time.sleep(0.8)
                 else:
                     release = HumanMouse.locate_on_screen("photos/fight/common/release.png")
                     if release:
