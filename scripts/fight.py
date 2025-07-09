@@ -30,7 +30,9 @@ offset_coords = {
     "fangly": (170, 320),
     "d_spin": (10, 170),
     "l_bludger": (140, 200),
-    "alpha": (120, 120)
+    "alpha": (120, 120),
+    "charpy": (130, 170),
+    "freedom": (-30, 190)
 }
 
 name_searches = {
@@ -58,7 +60,9 @@ name_searches = {
     "fangly": ["Fan", "gly"],
     "d_spin": ["D", "S"],
     "l_bludger": ["Blud", "ger"],
-    "alpha": ["Al", "ha"]
+    "alpha": ["Al", "pha"],
+    "charpy": ["rpy", "py"],
+    "freedom": ["F", "om", "ree"]
 }
 
 
@@ -291,14 +295,18 @@ class MiscritsBot:
     def main_loop(self):
         while True:
             is_ready_to_train, fight_crit_found, fight_tier = self.fight_on_location(self.crit_ref)
-            time.sleep(1) # Wait between clikc continue and see if captured congrats.
-
+            time.sleep(1.5) # Wait between clikc continue and see if captured congrats.
+            
+            print("! finished fight line 300")
             # quest success first and then captured.
             if HumanMouse.locate_on_screen("photos/fight/common/quest_success.png"):
+                print("! quest success found")
                 quest_okay = HumanMouse.locate_on_screen("photos/fight/common/quest_okay.png")
                 if quest_okay:
                     HumanMouse.move_to(quest_okay, 0, 0)
                     HumanMouse.click()
+            else:
+                print("!quest success not found")
             
             if HumanMouse.locate_on_screen("photos/fight/common/congrats.png"):
                 # captured_crit_name = self.fight_info.get_captured_crit_name()
@@ -307,8 +315,8 @@ class MiscritsBot:
                 # print("before keep/release: ")
                 # print("fight_tier =", fight_tier)
 
-                rs = HumanMouse.locate_on_screen("photos/fight/common/RS6.png", confidence=0.9) or \
-                    HumanMouse.locate_on_screen("photos/fight/common/RS7.png", confidence=0.9)
+                rs = HumanMouse.locate_on_screen("photos/fight/common/RS6.png", confidence=0.95) or \
+                    HumanMouse.locate_on_screen("photos/fight/common/RS7.png", confidence=0.95)
                 red_matches = HumanMouse.locate_all_on_screen("photos/fight/common/red.png", 
                                                               min_distance=30, confidence=0.8)
                 ap_red = fight_tier == "A+" and len(red_matches) == 1
