@@ -14,3 +14,5 @@ bot = MiscritsBot(search_crit="charpy",
                   plat_capture_attempts=0)
 
 bot.main_loop()
+
+# fix: truth: quest first , congrats you have recevied a new crit! later. cuurently doesn't work for this

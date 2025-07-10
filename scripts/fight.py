@@ -32,7 +32,8 @@ offset_coords = {
     "l_bludger": (140, 200),
     "alpha": (120, 120),
     "charpy": (130, 170),
-    "freedom": (-30, 190)
+    "freedom": (-30, 190),
+    "defilio": (160, -190)
 }
 
 name_searches = {
@@ -62,7 +63,8 @@ name_searches = {
     "l_bludger": ["Blud", "ger"],
     "alpha": ["Al", "pha"],
     "charpy": ["rpy", "py"],
-    "freedom": ["F", "om", "ree"]
+    "freedom": ["F", "om", "ree"],
+    "defilio": ["De"]
 }
 
 
@@ -115,12 +117,12 @@ class MiscritsBot:
                     return True
         return False
 
-    def notify_if_found(self, crit_name, crit_tier="N"):
+    def notify_if_found(self, crit_name, crit_tier="N", capture_chance="0"):
         if self.crit_name_match(crit_name):
-            print("⚠️ " + crit_tier + " " + crit_name + self.search_crit + " encountered!")
+            print("⚠️ " + capture_chance + " " + crit_tier + " " + crit_name + self.search_crit + " encountered!")
             for _ in range(self.notifier.num_notifs):
                 if self.notifier:
-                    self.notifier.send_telegram("⚠️ " + crit_tier + " " + self.search_crit + " encountered!")
+                    self.notifier.send_telegram("⚠️ " + capture_chance + "% " + crit_tier + " " + self.search_crit + " encountered!")
                 time.sleep(1)
             return True
         return False
@@ -201,7 +203,7 @@ class MiscritsBot:
                 crit_name, capture_chance = self.fight_info.get_capture_chance_and_crit_name()
                 # print("!! got capture chance and crit_name = ", crit_name, capture_chance)
                 crit_tier = self.fight_info.get_tier()
-                found = self.notify_if_found(crit_name, crit_tier=crit_tier)
+                found = self.notify_if_found(crit_name, crit_tier=crit_tier, capture_chance=capture_chance)
                 if not crit_name:
                     crit_name = "--"
 
@@ -295,7 +297,7 @@ class MiscritsBot:
     def main_loop(self):
         while True:
             is_ready_to_train, fight_crit_found, fight_tier = self.fight_on_location(self.crit_ref)
-            time.sleep(1.5) # Wait between clikc continue and see if captured congrats.
+            time.sleep(1) # Wait between clikc continue and see if captured congrats.
             
             print("! finished fight line 300")
             # quest success first and then captured.
@@ -392,6 +394,16 @@ class MiscritsBot:
                 cross = self.look_for_target_until_found("photos/fight/common/cross.png")
                 HumanMouse.move_to(cross, 0, 0)
                 HumanMouse.click()
+                time.sleep(1)
+            
+            if HumanMouse.locate_on_screen("photos/fight/common/quest_success.png"):
+                print("! quest success found")
+                quest_okay = HumanMouse.locate_on_screen("photos/fight/common/quest_okay.png")
+                if quest_okay:
+                    HumanMouse.move_to(quest_okay, 0, 0)
+                    HumanMouse.click()
+            else:
+                print("!quest success not found")
 
                 for _ in range(3):
                     time.sleep(0.5)
