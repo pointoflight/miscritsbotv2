@@ -33,7 +33,13 @@ offset_coords = {
     "alpha": (120, 120),
     "charpy": (130, 170),
     "freedom": (-30, 190),
-    "defilio": (160, -190)
+    "defilio": (160, -190),
+    "fennie": (-100, 200),
+    "blazertooth": (0, 0),
+    "podo": (-150, 130),
+    "d_nessy": (10, 320),
+    "manio": (50, 200),
+    "l_frostmite": (310, -120)
 }
 
 name_searches = {
@@ -64,7 +70,13 @@ name_searches = {
     "alpha": ["Al", "pha"],
     "charpy": ["rpy", "py"],
     "freedom": ["F", "om", "ree"],
-    "defilio": ["De"]
+    "defilio": ["De"],
+    "fennie": ["Fe"],
+    "blazertooth": ["B"],
+    "podo": ["P"],
+    "d_nessy": ["DarkNessy"],
+    "manio": ["Ma"],
+    "l_frostmite": ["F", "ros"]
 }
 
 
@@ -171,7 +183,7 @@ class MiscritsBot:
             return False, None, None
 
         loc = (loc[0] + self.search_loc_x_off + random.randint(-2, 2), loc[1] + self.search_loc_y_off + random.randint(-2, 2))
-        HumanMouse.move_to(loc, random.randint(0, 10), random.randint(-10, 0))
+        HumanMouse.move_to(loc, random.randint(0, 5), random.randint(-5, 0))
         time.sleep(0.1)
 
         search_for_miscrit = self.look_for_target_until_found("photos/fight/common/search_for_miscrit.png")
@@ -211,7 +223,7 @@ class MiscritsBot:
                 # time.sleep(2)
 
                 if (crit_tier in self.capture_tiers and int(capture_chance) >= 80 and capture_attempts == 0 and not found) or \
-                    (found and int(capture_chance) >= 50 and capture_attempts - 1 < self.plat_capture_attempts):
+                    (found and int(capture_chance) >= 40 and capture_attempts - 1 < self.plat_capture_attempts):
                     capture_button = HumanMouse.locate_on_screen("photos/fight/common/capture.png", confidence=0.8)
                     if capture_button:
                         HumanMouse.move_to(capture_button, 0, 0)
