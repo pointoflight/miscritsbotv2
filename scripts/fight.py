@@ -39,7 +39,12 @@ offset_coords = {
     "podo": (-150, 130),
     "d_nessy": (10, 320),
     "manio": (50, 200),
-    "l_frostmite": (310, -120)
+    "l_frostmite": (310, -120),
+    "f_waddles": (-200, 50),
+    "inferno": (0, 100),
+    "d_jelly": (-10, 200),
+    "f_croaky": (10, -200),
+    "ekkult": (70, 180)
 }
 
 name_searches = {
@@ -76,7 +81,12 @@ name_searches = {
     "podo": ["P"],
     "d_nessy": ["DarkNessy"],
     "manio": ["Ma"],
-    "l_frostmite": ["F", "ros"]
+    "l_frostmite": ["F", "ros"],
+    "f_waddles": ["Fo", "W"],
+    "inferno": ["In", "fer"],
+    "d_jelly": ["J", "lly"],
+    "f_croaky": ["Fo", "Croa"],
+    "ekkult": ["E", "kk"]
 }
 
 
@@ -223,7 +233,7 @@ class MiscritsBot:
                 # time.sleep(2)
 
                 if (crit_tier in self.capture_tiers and int(capture_chance) >= 80 and capture_attempts == 0 and not found) or \
-                    (found and int(capture_chance) >= 40 and capture_attempts - 1 < self.plat_capture_attempts):
+                    (found and int(capture_chance) >= 50 and capture_attempts - 1 < self.plat_capture_attempts):
                     capture_button = HumanMouse.locate_on_screen("photos/fight/common/capture.png", confidence=0.8)
                     if capture_button:
                         HumanMouse.move_to(capture_button, 0, 0)
