@@ -47,7 +47,8 @@ offset_coords = {
     "ekkult": (70, 180),
     "gravitron": (-150, 120),
     "eclipso": (-100, 170),
-    "smolderfry": (-200, 0)
+    "smolderfry": (-200, 0),
+    "pyrex": (70, -150)
 }
 
 name_searches = {
@@ -92,7 +93,8 @@ name_searches = {
     "ekkult": ["E", "kk"],
     "gravitron": ["G", "rav"],
     "eclipso": ["Ec", "lip"],
-    "smolderfry": ["Sm", "old"]
+    "smolderfry": ["Sm", "old"],
+    "pyrex": ["Py", "ex"]
 }
 
 
@@ -122,10 +124,11 @@ class MiscritsBot:
         count, stop = 0, 0
         while True:
             if stop > 1 and target_path == "photos/fight/common/search_for_miscrit.png":
-                HumanMouse.random_move(x=random.randint(-400, -100), y=random.randint(-400, -100))
+                HumanMouse.move_to((0, 0))
+                # HumanMouse.random_move(x=random.randint(-400, -100), y=random.randint(-400, -100))
                 return False
             if count > 2:
-                HumanMouse.random_move()
+                # HumanMouse.random_move()
                 time.sleep(0.2)
                 count = 0
             target = HumanMouse.locate_on_screen(target_path, confidence)
@@ -200,6 +203,8 @@ class MiscritsBot:
 
         loc = (loc[0] + self.search_loc_x_off + random.randint(-2, 2), loc[1] + self.search_loc_y_off + random.randint(-2, 2))
         HumanMouse.move_to(loc, random.randint(0, 5), random.randint(-5, 0))
+        # loc = (loc[0] + self.search_loc_x_off + random.randint(-2, 2), loc[1] + self.search_loc_y_off + random.randint(-2, 2))
+        # HumanMouse.move_to(loc, self.search_loc_x_off + random.randint(-2, 2), self.search_loc_y_off + random.randint(-2, 2))
         time.sleep(0.1)
 
         search_for_miscrit = self.look_for_target_until_found("photos/fight/common/search_for_miscrit.png")
@@ -392,21 +397,21 @@ class MiscritsBot:
             else:
                 print("!quest success not found")
             
-            if captured:
-                # if False: # TODO: add feature to move crit into inventory if in team after capture.
-                my_crits = HumanMouse.locate_on_screen("photos/fight/common/my_miscrits.png")
-                if my_crits:
-                    HumanMouse.move_to(my_crits, 0, 0)
-                    HumanMouse.click()
-                    time.sleep(0.3) # TODO: maybe optimize little everywhere not just here. All sleeps.
-                    order_of = HumanMouse.locate_on_screen("photos/fight/common/order_of.png")
-                    if order_of:
-                        order_of = (order_of[0], order_of[1] + 200)
-                        HumanMouse.smooth_drag(order_of, 0, 200)
-                        save = HumanMouse.locate_on_screen("photos/fight/common/save.png")
-                        HumanMouse.move_to(save, 0, 0)
-                        HumanMouse.click()
-                        time.sleep(0.8)
+            # if captured:
+            #     # if False: # TODO: add feature to move crit into inventory if in team after capture.
+            #     my_crits = HumanMouse.locate_on_screen("photos/fight/common/my_miscrits.png")
+            #     if my_crits:
+            #         HumanMouse.move_to(my_crits, 0, 0)
+            #         HumanMouse.click()
+            #         time.sleep(0.3) # TODO: maybe optimize little everywhere not just here. All sleeps.
+            #         order_of = HumanMouse.locate_on_screen("photos/fight/common/order_of.png")
+            #         if order_of:
+            #             order_of = (order_of[0], order_of[1] + 200)
+            #             HumanMouse.smooth_drag(order_of, 0, 200)
+            #             save = HumanMouse.locate_on_screen("photos/fight/common/save.png")
+            #             HumanMouse.move_to(save, 0, 0)
+            #             HumanMouse.click()
+            #             time.sleep(0.8)
 
             if is_ready_to_train:
                 train = self.look_for_target_until_found("photos/fight/common/train.png")
@@ -447,4 +452,4 @@ class MiscritsBot:
             print("search crits:", self.scrits_captured, "RS:", self.rs_captured, "a/b+ RS:", self.abprs_captured, \
                   "S+:", self.sp_captured, "A+ reds:", self.ap_reds, "levels up:", self.levels_up, "tries:", self.tries)
             
-            HumanMouse.random_move(x=random.randint(-400, -100), y=random.randint(-400, -100))
+            HumanMouse.move_to((0,0))

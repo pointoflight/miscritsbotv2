@@ -6,7 +6,7 @@ from fight_info import FightInfo
 
 notifier = Notifier(num_notifs=1)
 
-bot = MiscritsBot(search_crit="smolderfry",
+bot = MiscritsBot(search_crit="pyrex",
                   trainer_crit="papa",
                   notifier=notifier,
                   plat_training=False,
