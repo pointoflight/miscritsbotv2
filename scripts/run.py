@@ -6,11 +6,11 @@ from fight_info import FightInfo
 
 notifier = Notifier(num_notifs=1)
 
-bot = MiscritsBot(search_crit="ekkult",
+bot = MiscritsBot(search_crit="smolderfry",
                   trainer_crit="papa",
                   notifier=notifier,
                   plat_training=False,
-                  capture_tiers=["A+"],
+                  capture_tiers=["A+", "A", "B+"],
                   plat_capture_attempts=0)
 
 bot.main_loop()

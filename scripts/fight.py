@@ -44,7 +44,10 @@ offset_coords = {
     "inferno": (0, 100),
     "d_jelly": (-10, 200),
     "f_croaky": (10, -200),
-    "ekkult": (70, 180)
+    "ekkult": (70, 180),
+    "gravitron": (-150, 120),
+    "eclipso": (-100, 170),
+    "smolderfry": (-200, 0)
 }
 
 name_searches = {
@@ -86,7 +89,10 @@ name_searches = {
     "inferno": ["In", "fer"],
     "d_jelly": ["J", "lly"],
     "f_croaky": ["Fo", "Croa"],
-    "ekkult": ["E", "kk"]
+    "ekkult": ["E", "kk"],
+    "gravitron": ["G", "rav"],
+    "eclipso": ["Ec", "lip"],
+    "smolderfry": ["Sm", "old"]
 }
 
 
@@ -190,7 +196,7 @@ class MiscritsBot:
     def fight_on_location(self, image_path, confidence=0.8):
         loc = self.look_for_target_until_found(image_path)
         if not loc:
-            return False, None, None
+            return False, None
 
         loc = (loc[0] + self.search_loc_x_off + random.randint(-2, 2), loc[1] + self.search_loc_y_off + random.randint(-2, 2))
         HumanMouse.move_to(loc, random.randint(0, 5), random.randint(-5, 0))
@@ -198,7 +204,7 @@ class MiscritsBot:
 
         search_for_miscrit = self.look_for_target_until_found("photos/fight/common/search_for_miscrit.png")
         if not search_for_miscrit:
-            return False, None, None
+            return False, None
         time.sleep(0.05)
         HumanMouse.click()
         time.sleep(1.5)
@@ -206,7 +212,7 @@ class MiscritsBot:
         outcome, _ = self.look_for_fight_or_potion(self.fight_background, self.crit_ref)
         if outcome == "potion":
             time.sleep(17)
-            return False, None, None
+            return False, None
 
         self.tries += 1
         capture_attempts = 0
@@ -214,6 +220,7 @@ class MiscritsBot:
         capture_chance = "0"
         crit_tier = "N"
         found = False
+        captured = False
 
         while True:
             turn_ret = self.look_for_fight_over_or_not(self.my_turn, "photos/fight/common/fight_continue.png")
@@ -248,10 +255,11 @@ class MiscritsBot:
                         time.sleep(5.4)
 
                         if HumanMouse.locate_on_screen("photos/fight/common/captured.png", confidence=0.8):
-                            captured_okay = HumanMouse.locate_on_screen("photos/fight/common/captured_okay.png", confidence=0.8)
-                            HumanMouse.move_to(captured_okay, 0, 0)
-                            HumanMouse.click()
-                            time.sleep(3)
+                            captured = self.capture_or_release(crit_tier, found)
+                            # captured_keep = HumanMouse.locate_on_screen("photos/fight/common/captured_keep.png", confidence=0.8)
+                            # HumanMouse.move_to(captured_keep, 0, 0)
+                            # HumanMouse.click()
+                            time.sleep(1)
 
                         continue
                 else:
@@ -266,7 +274,7 @@ class MiscritsBot:
                 is_ready_to_train = self.ready_to_train("photos/fight/common/ready_to_train.png")
                 HumanMouse.move_to(fight_complete, 0, 0)
                 HumanMouse.click()
-                return is_ready_to_train, found, crit_tier
+                return is_ready_to_train, captured
 
     def train_crit(self, crit):
         HumanMouse.move_to(crit, 0, 0)
@@ -315,11 +323,63 @@ class MiscritsBot:
             HumanMouse.click()
             time.sleep(1) # TODO: optimize?
 
+    def capture_or_release(self, fight_tier, fight_crit_found):
+        rs = HumanMouse.locate_on_screen("photos/fight/common/RS6.png", confidence=0.95) or \
+            HumanMouse.locate_on_screen("photos/fight/common/RS7.png", confidence=0.95)
+        red_matches = HumanMouse.locate_all_on_screen("photos/fight/common/red.png", 
+                                                        min_distance=30, confidence=0.8)
+        ap_red = fight_tier == "A+" and len(red_matches) == 1
+        abprs = (fight_tier == "A" and len(red_matches) == 1) or \
+            (fight_tier == "B+" and len(red_matches) == 2)
         
+        print("!! len(red_matches):", len(red_matches))
+        print("red_matches:" , red_matches)
+        print("is RS:" , rs)
+        print("fight_crit_found:", fight_crit_found)
+
+        if fight_crit_found:
+            self.scrits_captured += 1
+            # self.notifier.send_telegram("⚠️ search crit CAPTURED!")
+        elif rs:
+            if fight_tier == "A+": # same as len(red_matches) == 1 cuz it's already RS.
+                self.rs_captured += 1
+            elif abprs:
+                self.abprs_captured += 1
+            # self.notifier.send_telegram("RS CAPTURED!")
+        elif fight_tier == "S+":
+            self.sp_captured += 1
+            # self.notifier.send_telegram("S+ CAPTURED!")
+        elif ap_red:
+            self.ap_reds += 1
+            # self.notifier.send_telegram("A+ red CAPTURED!")
+
+
+        if (rs and (abprs or fight_tier == "A+")) or fight_crit_found: # or fight_tier in ["S+", "S"] or ap_red:
+            keep = HumanMouse.locate_on_screen("photos/fight/common/captured_keep.png")
+            if keep:
+                captured = True
+                HumanMouse.move_to(keep, 0, 0)
+                HumanMouse.click()
+                time.sleep(1.6)
+                if fight_crit_found:
+                    self.notifier.send_telegram(":) " + fight_tier + " " + self.search_crit + " CAPTURED!")
+                return True
+        else:
+            release = HumanMouse.locate_on_screen("photos/fight/common/captured_release.png")
+            if release:
+                HumanMouse.move_to(release, 0, 0)
+                HumanMouse.click()
+                release_confirm = self.look_for_target_until_found("photos/fight/common/release_confirm.png")
+                release_yes = HumanMouse.locate_on_screen("photos/fight/common/release_yes.png")
+                HumanMouse.move_to(release_yes, 0, 0)
+                HumanMouse.click()
+                time.sleep(1.6) # TODO: optimize, maybe no sleep needed.
+                return False
+
     def main_loop(self):
         while True:
-            is_ready_to_train, fight_crit_found, fight_tier = self.fight_on_location(self.crit_ref)
-            time.sleep(1) # Wait between clikc continue and see if captured congrats.
+            is_ready_to_train, captured = self.fight_on_location(self.crit_ref)
+            time.sleep(1) #TODO: Remove? Not needed after update? Wait between clikc continue and see if captured congrats.
             
             print("! finished fight line 300")
             # quest success first and then captured.
@@ -332,75 +392,21 @@ class MiscritsBot:
             else:
                 print("!quest success not found")
             
-            if HumanMouse.locate_on_screen("photos/fight/common/congrats.png"):
-                # captured_crit_name = self.fight_info.get_captured_crit_name()
-                # print("captured crit name = ", captured_crit_name)
-
-                # print("before keep/release: ")
-                # print("fight_tier =", fight_tier)
-
-                rs = HumanMouse.locate_on_screen("photos/fight/common/RS6.png", confidence=0.95) or \
-                    HumanMouse.locate_on_screen("photos/fight/common/RS7.png", confidence=0.95)
-                red_matches = HumanMouse.locate_all_on_screen("photos/fight/common/red.png", 
-                                                              min_distance=30, confidence=0.8)
-                ap_red = fight_tier == "A+" and len(red_matches) == 1
-                abprs = (fight_tier == "A" and len(red_matches) == 1) or \
-                    (fight_tier == "B+" and len(red_matches) == 2)
-                
-                print("!! len(red_matches):", len(red_matches))
-                print("red_matches:" , red_matches)
-                print("is RS:" , rs)
-                print("fight_crit_found:", fight_crit_found)
-
-                if fight_crit_found:
-                    self.scrits_captured += 1
-                    # self.notifier.send_telegram("⚠️ search crit CAPTURED!")
-                elif rs:
-                    if fight_tier == "A+": # same as len(red_matches) == 1 cuz it's already RS.
-                        self.rs_captured += 1
-                    elif abprs:
-                        self.abprs_captured += 1
-                    # self.notifier.send_telegram("RS CAPTURED!")
-                elif fight_tier == "S+":
-                    self.sp_captured += 1
-                    # self.notifier.send_telegram("S+ CAPTURED!")
-                elif ap_red:
-                    self.ap_reds += 1
-                    # self.notifier.send_telegram("A+ red CAPTURED!")
-
-                if (rs and (abprs or fight_tier == "A+")) or fight_crit_found: # or fight_tier in ["S+", "S"] or ap_red:
-                    keep = HumanMouse.locate_on_screen("photos/fight/common/keep.png")
-                    if keep:
-                        HumanMouse.move_to(keep, 0, 0)
+            if captured:
+                # if False: # TODO: add feature to move crit into inventory if in team after capture.
+                my_crits = HumanMouse.locate_on_screen("photos/fight/common/my_miscrits.png")
+                if my_crits:
+                    HumanMouse.move_to(my_crits, 0, 0)
+                    HumanMouse.click()
+                    time.sleep(0.3) # TODO: maybe optimize little everywhere not just here. All sleeps.
+                    order_of = HumanMouse.locate_on_screen("photos/fight/common/order_of.png")
+                    if order_of:
+                        order_of = (order_of[0], order_of[1] + 200)
+                        HumanMouse.smooth_drag(order_of, 0, 200)
+                        save = HumanMouse.locate_on_screen("photos/fight/common/save.png")
+                        HumanMouse.move_to(save, 0, 0)
                         HumanMouse.click()
-                        if fight_crit_found:
-                            self.notifier.send_telegram(":) " + fight_tier + " " + self.search_crit + " CAPTURED!")
-                        
-                        # if False: # TODO: add feature to move crit into inventory if in team after capture.
-                        # my_crits = HumanMouse.locate_on_screen("photos/fight/common/my_miscrits.png")
-                        # if my_crits:
-                        #     HumanMouse.move_to(my_crits, 0, 0)
-                        #     HumanMouse.click()
-                        #     time.sleep(0.3) # TODO: maybe optimize little everywhere not just here. All sleeps.
-                        #     order_of = HumanMouse.locate_on_screen("photos/fight/common/order_of.png")
-                        #     if order_of:
-                        #         order_of = (order_of[0], order_of[1] + 200)
-                        #         HumanMouse.smooth_drag(order_of, 0, 200)
-                        #         save = HumanMouse.locate_on_screen("photos/fight/common/save.png")
-                        #         HumanMouse.move_to(save, 0, 0)
-                        #         HumanMouse.click()
-                        #         time.sleep(0.8)
-                else:
-                    release = HumanMouse.locate_on_screen("photos/fight/common/release.png")
-                    if release:
-                        HumanMouse.move_to(release, 0, 0)
-                        HumanMouse.click()
-                        release_confirm = self.look_for_target_until_found("photos/fight/common/release_confirm.png")
-                        release_yes = HumanMouse.locate_on_screen("photos/fight/common/release_yes.png")
-                        HumanMouse.move_to(release_yes, 0, 0)
-                        HumanMouse.click()
-                        time.sleep(2.6)
-
+                        time.sleep(0.8)
 
             if is_ready_to_train:
                 train = self.look_for_target_until_found("photos/fight/common/train.png")

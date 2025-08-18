@@ -60,13 +60,16 @@ import random
 # time.sleep(0.1)
 
 
-loc = HumanMouse.locate_on_screen("photos/fight/ekkult/ref.png")
+loc = HumanMouse.locate_on_screen("photos/fight/smolderfry/ref.png")
 if loc:
-    loc = (loc[0] + 70 + random.randint(-2, 2), loc[1] + 180 + random.randint(-2, 2))
+    loc = (loc[0] + -200 + random.randint(-2, 2), loc[1] + 0 + random.randint(-2, 2))
     HumanMouse.move_to(loc) # random.randint(0, 10), random.randint(-10, 0))
 else:
     print("not found")
 
+# red_matches = HumanMouse.locate_all_on_screen("photos/fight/common/red.png", 
+#                                                         min_distance=30, confidence=0.8)
+# print("!! len(red_matches):", len(red_matches))
 # import random
 
 # # Parameters
