@@ -2,18 +2,23 @@ from fight import MiscritsBot
 from notifier import Notifier
 from human_mouse import HumanMouse
 from fight_info import FightInfo
+from logger import setup_logger
 
+logger = setup_logger()
 
-notifier = Notifier(num_notifs=1)
+notifier = Notifier(num_notifs=10)
 
-bot = MiscritsBot(search_crit="pyrex",
+bot = MiscritsBot(search_crit="gravitron",
                   trainer_crit="papa",
                   notifier=notifier,
-                  plat_training=False,
-                  capture_tiers=["A+", "A", "B+"],
+                  logger=logger,
+                  plat_training=True,
+                  capture_tiers=["S+", "S", "A+"],
                   plat_capture_attempts=0)
 
+logger.info("Bot started.")
 bot.main_loop()
+logger.info("Bot stopped.")
 
 # fix: truth: quest first , congrats you have recevied a new crit later. currently doesn't work for this
 # add IST time to all print statements, and print to a file instead of fix buffer terminal

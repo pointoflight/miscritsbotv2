@@ -11,10 +11,6 @@ class HumanMouse:
         pyautogui.moveRel(x_off, y_off, duration=0.05, tween=pyautogui.easeInOutQuad)
 
     @staticmethod
-    def random_move(x=0, y=0):
-        pyautogui.moveRel(x, y, duration=0.05, tween=pyautogui.easeInOutQuad)
-
-    @staticmethod
     def click():
         pyautogui.mouseDown()
         time.sleep(0.01)
