@@ -57,7 +57,7 @@ class FightInfo:
         loc = self.locate_on_screen("photos/fight/common/capture.png", confidence=0.8)
         critter_name = "--"
         capture_chance = "0"
-        crit_hp = "0"
+        crit_hp = "100"
 
         if loc:
             if name:
