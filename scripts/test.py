@@ -7,8 +7,10 @@ import time
 import random
 
 
-# fight_info = FightInfo()
+fight_info = FightInfo()
 
+crit_hp = fight_info.get_capture_chance_and_crit_name(name=False, chance=False)
+print(crit_hp)
 # Example: get tier
 # tier = fight_info.get_tier()
 # print("Tier:", tier)
@@ -60,12 +62,12 @@ import random
 # time.sleep(0.1)
 
 
-loc = HumanMouse.locate_on_screen("photos/fight/boltzee/ref.png")
-if loc:
-    loc = (loc[0] + 170 + random.randint(-2, 2), loc[1] + -0 + random.randint(-2, 2))
-    HumanMouse.move_to(loc) # random.randint(0, 10), random.randint(-10, 0))
-else:
-    print("not found")
+# loc = HumanMouse.locate_on_screen("photos/fight/common/items.png")
+# if loc:
+#     loc = (loc[0] + 642 + random.randint(-2, 2), loc[1] + 70 + random.randint(-2, 2))
+#     HumanMouse.move_to(loc) # random.randint(0, 10), random.randint(-10, 0))
+# else:
+#     print("not found")
 
 # HumanMouse.move_to((0, 0))
 # red_matches = HumanMouse.locate_all_on_screen("photos/fight/common/red.png", 

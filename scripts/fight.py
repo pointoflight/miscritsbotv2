@@ -310,11 +310,12 @@ class MiscritsBot:
                 (crit_name,
                  capture_chance,
                  crit_tier,
-                 found) = self._gather_crit_info()
+                 found,
+                 crit_hp) = self._gather_crit_info()
 
                 self._log_fight_status(
                     crit_tier, crit_name, found,
-                    capture_chance, capture_attempts
+                    capture_chance, capture_attempts, crit_hp
                 )
 
                 if self._should_attempt_capture(
@@ -327,13 +328,13 @@ class MiscritsBot:
                     if captured:
                         continue
                 else:
-                    self._perform_attack()
+                    self._perform_attack(crit_hp)
             else:
                 return self._finalize_fight(captured)
 
     def _gather_crit_info(self):
         """Fetches crit name, capture chance, tier, and notifies if found."""
-        crit_name, capture_chance = self.fight_info.get_capture_chance_and_crit_name()
+        crit_name, capture_chance, crit_hp = self.fight_info.get_capture_chance_and_crit_name()
         crit_tier = self.fight_info.get_tier()
         found = self.notify_if_found(
             crit_name, crit_tier=crit_tier, capture_chance=capture_chance
@@ -342,15 +343,16 @@ class MiscritsBot:
         if not crit_name:
             crit_name = "--"
 
-        return crit_name, capture_chance, crit_tier, found
+        return crit_name, capture_chance, crit_tier, found, crit_hp
 
     def _log_fight_status(self, crit_tier, crit_name, found,
-                          capture_chance, capture_attempts) -> None:
+                          capture_chance, capture_attempts, crit_hp) -> None:
         """Logs fight decision-making details."""
         print(
             f"[TURN] Tier={crit_tier} | Name={crit_name} | "
             f"Found={found} | CaptureChance={capture_chance}% | "
-            f"Attempts={capture_attempts}"
+            f"Attempts={capture_attempts} | "
+            f"CritHP={crit_hp}"
         )
 
     def _should_attempt_capture(self, crit_tier, capture_chance,
@@ -405,17 +407,52 @@ class MiscritsBot:
 
         return captured, capture_attempts
 
-    def _perform_attack(self) -> None:
+    def use_magical_heal(self):
+            items_image = f"photos/fight/common/items.png"
+            items_move = self.look_for_target_until_found(items_image)
+
+            print("[ACTION] Using Magical heal.")
+
+            HumanMouse.move_to(items_move, 0, 0)
+            HumanMouse.click()
+            # HumanMouse.move_to(attack_move, 0, -200)
+            time.sleep(0.1)
+
+            HumanMouse.move_to(items_move, 642, 70)
+            while not HumanMouse.locate_on_screen(
+                "photos/fight/common/magical_heal.png", confidence=0.8):
+                HumanMouse.click()
+                time.sleep(0.05)
+            
+            magical_heal = f"photos/fight/common/magical_heal.png"
+            magical_heal_move = self.look_for_target_until_found(magical_heal)
+
+            HumanMouse.move_to(magical_heal_move, 0, 0)
+            HumanMouse.click()
+            time.sleep(0.1)
+
+            abilities = f"photos/fight/common/abilities.png"
+            abilities_move = self.look_for_target_until_found(abilities)
+
+            HumanMouse.move_to(abilities_move, 0, 0)
+            HumanMouse.click()
+
+    def _perform_attack(self, crit_hp) -> None:
         """Executes an attack move if capture is not attempted."""
-        attack_image = f"photos/fight/common/{self.trainer_crit}_attack.png"
-        attack_move = self.look_for_target_until_found(attack_image)
 
-        print("[ACTION] Attacking instead of capturing.")
+        if int(crit_hp) < 60:
+            self.use_magical_heal() #TODO: handle case where no magical heals
+            time.sleep(1.5)
+        else:
+            attack_image = f"photos/fight/common/{self.trainer_crit}_attack.png"
+            attack_move = self.look_for_target_until_found(attack_image)
 
-        HumanMouse.move_to(attack_move, 0, 0)
-        HumanMouse.click()
-        HumanMouse.move_to(attack_move, 0, -200)
-        time.sleep(2)
+            print("[ACTION] Attacking instead of capturing.")
+
+            HumanMouse.move_to(attack_move, 0, 0)
+            HumanMouse.click()
+            HumanMouse.move_to(attack_move, 0, -200)
+            time.sleep(2)
 
     def _finalize_fight(self, captured: bool):
         """Handles cleanup when the fight is over."""

@@ -53,10 +53,12 @@ class FightInfo:
         crit_name, _ = self.get_capture_chance_and_crit_name(chance=False)
         return crit_name
     
-    def get_capture_chance_and_crit_name(self, name=True, chance=True):
+    def get_capture_chance_and_crit_name(self, name=True, chance=True, hp=True):
         loc = self.locate_on_screen("photos/fight/common/capture.png", confidence=0.8)
         critter_name = "--"
         capture_chance = "0"
+        crit_hp = "0"
+
         if loc:
             if name:
                 crit_name = (loc[0] + 250, loc[1] - 90, loc[0] + 370, loc[1] - 72)
@@ -73,8 +75,18 @@ class FightInfo:
                 if not capture_chance:
                     capture_chance = "0"
 
-            return ''.join(critter_name.split()), capture_chance
+            if hp:
+                cc = (loc[0] - 270, loc[1] - 65, loc[0] - 200, loc[1] - 50)
+                hp_image = ImageGrab.grab(bbox=cc)
+                hp_config = r'--psm 7 -c tessedit_char_whitelist=0123456789/'
+                crit_hp = self.detect_text(hp_image, hp_config)
+                crit_hp = crit_hp.split('/')[0]
+                if not crit_hp:
+                    crit_hp = "0"
+
+
+            return ''.join(critter_name.split()), capture_chance, crit_hp
         
         print("not found capture!")
-        return ''.join(critter_name.split()), capture_chance
+        return ''.join(critter_name.split()), capture_chance, crit_hp
 

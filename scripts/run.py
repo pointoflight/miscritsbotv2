@@ -9,7 +9,7 @@ logger = setup_logger()
 notifier = Notifier(num_notifs=10)
 
 bot = MiscritsBot(search_crit="lithos",
-                  trainer_crit="papa",
+                  trainer_crit="b_flue",
                   notifier=notifier,
                   logger=logger,
                   plat_training=False,
