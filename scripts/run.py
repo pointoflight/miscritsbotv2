@@ -8,11 +8,11 @@ logger = setup_logger()
 
 notifier = Notifier(num_notifs=10)
 
-bot = MiscritsBot(search_crit="gravitron",
+bot = MiscritsBot(search_crit="lithos",
                   trainer_crit="papa",
                   notifier=notifier,
                   logger=logger,
-                  plat_training=True,
+                  plat_training=False,
                   capture_tiers=["S+", "S", "A+"],
                   plat_capture_attempts=0)
 

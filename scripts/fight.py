@@ -51,7 +51,9 @@ offset_coords = {
     "pyrex": (70, -150),
     "lithos": (-170, 180),
     "void": (-120, -190),
-    "beat": (-280, -20)
+    "beat": (-280, -20),
+    "gemix": (-30, -120),
+    "boltzee": (170, 0)
 }
 
 name_searches = {
@@ -100,7 +102,9 @@ name_searches = {
     "pyrex": ["Py", "ex"],
     "lithos": ["Li", "hos"],
     "void": ["Vo", "ron"],
-    "beat": ["Be", "eo"]
+    "beat": ["Be", "eo"],
+    "gemix": ["G", "em"],
+    "boltzee": ["B", "ee"],
 }
 
 
