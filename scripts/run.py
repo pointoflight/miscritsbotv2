@@ -8,13 +8,14 @@ logger = setup_logger()
 
 notifier = Notifier(num_notifs=10)
 
-bot = MiscritsBot(search_crit="lithos",
-                  trainer_crit="b_flue",
-                  notifier=notifier,
-                  logger=logger,
+bot = MiscritsBot(search_crit="beat",
+                  trainer_crit="papa",
+                  heal=False,
                   plat_training=False,
                   capture_tiers=["S+", "S", "A+"],
-                  plat_capture_attempts=0)
+                  plat_capture_attempts=0,
+                  notifier=notifier,
+                  logger=logger)
 
 logger.info("Bot started.")
 bot.main_loop()

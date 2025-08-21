@@ -109,9 +109,9 @@ name_searches = {
 
 
 class MiscritsBot:
-    def __init__(self, search_crit, trainer_crit, notifier=None, logger=None,
+    def __init__(self, search_crit, trainer_crit, heal=False,
                  plat_training=False, capture_tiers=["B+", "A", "A+", "S+", "S"], 
-                 plat_capture_attempts=0):
+                 plat_capture_attempts=0, notifier=None, logger=None):
         self.notifier = notifier
         self.logger = logger
         self.trainer_crit = trainer_crit
@@ -132,6 +132,7 @@ class MiscritsBot:
         self.levels_up = 0
         self.tries = 0
         self.capture_tiers = capture_tiers
+        self.heal = heal
 
     def look_for_target_until_found(self, target_path: str, confidence: float = 0.8):
         """Continuously searches for a target on screen until found or timeout triggers."""
@@ -440,7 +441,7 @@ class MiscritsBot:
     def _perform_attack(self, crit_hp) -> None:
         """Executes an attack move if capture is not attempted."""
 
-        if int(crit_hp) < 60:
+        if self.heal and int(crit_hp) < 60:
             self.use_magical_heal() #TODO: handle case where no magical heals
             time.sleep(1.5)
         else:
