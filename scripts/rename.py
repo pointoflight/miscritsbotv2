@@ -83,6 +83,7 @@ class Rename:
                 found_count += 1
                 rw_stat = image_path.split('/')[2].split('.')[0]
                 rw_stat = "".join(ch for ch in rw_stat if not ch.isdigit())
+                rw_stat = rw_stat[1:] if rw_stat else rw_stat
                 found_images.append(rw_stat)  # store both image and its location
 
         return found_count, found_images
@@ -90,14 +91,14 @@ class Rename:
     def rename(self, crit):
         HumanMouse.move_to(crit)
         HumanMouse.click()
-        time.sleep(0.1) # TODO: optimize
+        time.sleep(0.05) # TODO: optimize
         count, stats = self.find_images()
         if count != 1:
             return False
         settings = HumanMouse.locate_on_screen("photos/rename/settings.png")
         HumanMouse.move_to(settings)
         HumanMouse.click()
-        time.sleep(0.1)
+        time.sleep(0.05)
 
         rename_crit = HumanMouse.locate_on_screen(
             "photos/rename/rename_crit.png", confidence=0.99)
@@ -120,7 +121,7 @@ class Rename:
             "photos/rename/save.png", confidence=0.9)
         HumanMouse.move_to(save)
         HumanMouse.click()
-        time.sleep(1.5)
+        time.sleep(1.3)
 
         return True
 
@@ -136,7 +137,7 @@ class Rename:
                 "photos/rename/down.png", confidence=0.9)
             HumanMouse.move_to(down)
             HumanMouse.click()
-            time.sleep(0.1)
+            time.sleep(0.05)
 
 
 # a = rename.find_all()
