@@ -53,7 +53,8 @@ offset_coords = {
     "void": (-120, -190),
     "beat": (-280, -20),
     "gemix": (-30, -120),
-    "boltzee": (170, 0)
+    "boltzee": (170, 0),
+    "bunplop": (150, 0)
 }
 
 name_searches = {
@@ -105,6 +106,7 @@ name_searches = {
     "beat": ["Be", "eo"],
     "gemix": ["G", "em"],
     "boltzee": ["B", "ee"],
+    "bunplop": ["Bu", "pl"],
 }
 
 

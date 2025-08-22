@@ -84,6 +84,10 @@ class Rename:
                 rw_stat = image_path.split('/')[2].split('.')[0]
                 rw_stat = "".join(ch for ch in rw_stat if not ch.isdigit())
                 rw_stat = rw_stat[1:] if rw_stat else rw_stat
+                if 'ea' in rw_stat:
+                    rw_stat = 'ew'
+                elif 'pa' in rw_stat:
+                    rw_stat = 'pw'
                 found_images.append(rw_stat)  # store both image and its location
 
         return found_count, found_images

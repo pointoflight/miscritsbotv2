@@ -62,9 +62,9 @@ import random
 # time.sleep(0.1)
 
 
-loc = HumanMouse.locate_on_screen("photos/rename/rename.png")
+loc = HumanMouse.locate_on_screen("photos/fight/bunplop/ref.png")
 if loc:
-    loc = (loc[0] + 200 + random.randint(-2, 2), loc[1] + 80 + random.randint(-2, 2))
+    loc = (loc[0] + 150 + random.randint(-2, 2), loc[1] + 0 + random.randint(-2, 2))
     HumanMouse.move_to(loc) # random.randint(0, 10), random.randint(-10, 0))
 else:
     print("not found")
