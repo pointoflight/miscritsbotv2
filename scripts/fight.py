@@ -217,7 +217,7 @@ class MiscritsBot:
                 return "fight_complete"
 
             print("[CHECK] No fight indicators found...")
-            time.sleep(0.1)
+            # time.sleep(0.1)
 
     def look_for_fight_or_potion(
         self, fight_path: str, potion_path: str, confidence: float = 0.8
