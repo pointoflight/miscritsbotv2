@@ -54,7 +54,10 @@ offset_coords = {
     "beat": (-280, -20),
     "gemix": (-30, -120),
     "boltzee": (170, 0),
-    "bunplop": (150, 0)
+    "bunplop": (150, 0),
+    "hoopty": (150, -50),
+    "f_vexie": (-100, 230),
+    "f_luna": (-190, 260)
 }
 
 name_searches = {
@@ -107,6 +110,9 @@ name_searches = {
     "gemix": ["G", "em"],
     "boltzee": ["B", "ee"],
     "bunplop": ["Bu", "pl"],
+    "hoopty": ["Ho"],
+    "f_vexie": ["Fo"],
+    "f_luna": ["Fo"]
 }
 
 

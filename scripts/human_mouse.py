@@ -57,3 +57,19 @@ class HumanMouse:
         pyautogui.moveTo(x_end, y_end, duration=0.01, tween=pyautogui.easeInOutQuad)
 
         pyautogui.mouseUp()
+
+    @staticmethod
+    def smooth_drag_to(start_pos, end_pos):
+        """
+        Clicks and drags from start_pos by the given offset using tweening for smooth motion.
+        """
+        x_start, y_start = start_pos
+        x_end, y_end = end_pos
+
+        pyautogui.moveTo(x_start, y_start, duration=0.01, tween=pyautogui.easeInOutQuad)
+        pyautogui.mouseDown()
+        time.sleep(0.01)
+
+        pyautogui.moveTo(x_end, y_end, duration=0.01, tween=pyautogui.easeInOutQuad)
+
+        pyautogui.mouseUp()

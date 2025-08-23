@@ -61,10 +61,17 @@ import random
 #     print("not found capture!")
 # time.sleep(0.1)
 
+# green_matches = HumanMouse.locate_all_on_screen(
+#                 "photos/breed/green.png",
+#                 min_distance=15,
+#                 confidence=0.85
+#             )
 
-loc = HumanMouse.locate_on_screen("photos/fight/bunplop/ref.png")
+# print("len(green_matches):", len(green_matches))
+
+loc = HumanMouse.locate_on_screen("photos/breed/release_yes.png")
 if loc:
-    loc = (loc[0] + 150 + random.randint(-2, 2), loc[1] + 0 + random.randint(-2, 2))
+    loc = (loc[0] + -0 + random.randint(-2, 2), loc[1] + 0 + random.randint(-2, 2))
     HumanMouse.move_to(loc) # random.randint(0, 10), random.randint(-10, 0))
 else:
     print("not found")
