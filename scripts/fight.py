@@ -57,7 +57,8 @@ offset_coords = {
     "bunplop": (150, 0),
     "hoopty": (150, -50),
     "f_vexie": (-100, 230),
-    "f_luna": (-190, 260)
+    "f_luna": (-190, 260),
+    "keeper": (250, 250)
 }
 
 name_searches = {
@@ -112,14 +113,15 @@ name_searches = {
     "bunplop": ["Bu", "pl"],
     "hoopty": ["Ho"],
     "f_vexie": ["Fo"],
-    "f_luna": ["Fo"]
+    "f_luna": ["Fo"],
+    "keeper": ["K"]
 }
 
 
 class MiscritsBot:
     def __init__(self, search_crit, trainer_crit, heal=False,
                  plat_training=False, capture_tiers=["B+", "A", "A+", "S+", "S"], 
-                 plat_capture_attempts=0, notifier=None, logger=None):
+                 move_page=1, plat_capture_attempts=0, notifier=None, logger=None):
         self.notifier = notifier
         self.logger = logger
         self.trainer_crit = trainer_crit
@@ -141,6 +143,7 @@ class MiscritsBot:
         self.tries = 0
         self.capture_tiers = capture_tiers
         self.heal = heal
+        self.move_page = move_page
 
     def look_for_target_until_found(self, target_path: str, confidence: float = 0.8):
         """Continuously searches for a target on screen until found or timeout triggers."""
@@ -308,6 +311,15 @@ class MiscritsBot:
         capture_chance = "0"
         crit_tier = "N"
         found = False
+        page = 1
+        crit_hp = "0"
+
+        if page != self.move_page:
+            book = self.look_for_target_until_found(
+                "photos/fight/common/book.png")
+            HumanMouse.move_to(book, 450, 890)
+            HumanMouse.click()
+            page = 2
 
         while True:
             turn_status = self.look_for_fight_over_or_not(
@@ -343,8 +355,8 @@ class MiscritsBot:
 
     def _gather_crit_info(self):
         """Fetches crit name, capture chance, tier, and notifies if found."""
-        crit_name, capture_chance, crit_hp = self.fight_info.get_capture_chance_and_crit_name()
-        crit_tier = self.fight_info.get_tier()
+        crit_name, capture_chance, crit_hp, crit_tier = self.fight_info.get_capture_chance_crit_name_tier()
+        # crit_tier = self.fight_info.get_tier()
         found = self.notify_if_found(
             crit_name, crit_tier=crit_tier, capture_chance=capture_chance
         )

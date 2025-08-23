@@ -1,6 +1,7 @@
 import tkinter as tk
 import threading
 import time
+from human_mouse import HumanMouse
 
 def show_region(region, duration=2, color="red", width=3):
     """
@@ -32,9 +33,10 @@ def show_region(region, duration=2, color="red", width=3):
 
 
 # Example usage
-center = (534, 588)
+# center = (534, 588)
 # region = (center[0] - 125, center[1] - 40, 60, 55)  # trial-error region
-region = (409, 750, 60, 55)
+loc = HumanMouse.locate_on_screen("photos/fight/common/book.png")
+region = (loc[0] - 270, loc[1] - 40, 700, 170)
 print("Showing region for debugging...")
 show_region(region, duration=2)
 time.sleep(2.5)  # wait so you can see it before script ends
