@@ -6,14 +6,14 @@ from logger import setup_logger
 
 logger = setup_logger()
 
-notifier = Notifier(num_notifs=10)
+notifier = Notifier(num_notifs=30)
 
-bot = MiscritsBot(search_crit="keeper",
-                  trainer_crit="aquarion",
-                  heal=False,
+bot = MiscritsBot(search_crit="l_tectonyx",
+                  trainer_crit="grav",
+                  heal=True,
                   plat_training=False,
-                  capture_tiers=["A+", "A", "B+"],
-                  move_page=2,
+                  capture_tiers=["S+", "A", "A+", "B+"],
+                  move_page=1,
                   plat_capture_attempts=0,
                   notifier=notifier,
                   logger=logger)

@@ -61,17 +61,22 @@ class FightInfo:
     
     def get_capture_chance_crit_name_tier(self, name=True, chance=True, hp=True, tier=True):
         loc = HumanMouse.locate_on_screen("photos/fight/common/book.png")
-        fight_region = (loc[0] - 270, loc[1] - 40, 700, 170)
-        # fight_region = (500, 300, 900, 400)  # adjust to your fight UI box
-        screenshot = self._screenshot_region(fight_region)
-
-        loc = self.locate_in_screenshot(screenshot, "photos/fight/common/capture.png", 
-                                   region_offset=(fight_region[0], fight_region[1]))
 
         critter_name = "--"
         capture_chance = "0"
         crit_hp = "100"
         crit_tier = 'N'
+
+        if not loc:
+            return ''.join(critter_name.split()), capture_chance, crit_hp, crit_tier 
+
+        fight_region = (loc[0] - 270, loc[1] - 40, 700, 170)
+        # fight_region = (500, 300, 900, 400)  # adjust to your fight UI box
+        screenshot = self._screenshot_region(fight_region)
+
+        # TODO: This loc is not really needed can use book location for offsets.
+        loc = self.locate_in_screenshot(screenshot, "photos/fight/common/capture.png", 
+                                   region_offset=(fight_region[0], fight_region[1]))
 
         if loc:
             if tier:

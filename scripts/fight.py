@@ -58,7 +58,9 @@ offset_coords = {
     "hoopty": (150, -50),
     "f_vexie": (-100, 230),
     "f_luna": (-190, 260),
-    "keeper": (250, 250)
+    "keeper": (250, 250),
+    "babakku": (-200, 0),
+    "l_tectonyx": (300, -50)
 }
 
 name_searches = {
@@ -114,7 +116,9 @@ name_searches = {
     "hoopty": ["Ho"],
     "f_vexie": ["Fo"],
     "f_luna": ["Fo"],
-    "keeper": ["K"]
+    "keeper": ["K"],
+    "babakku": ["Ba"],
+    "l_tectonyx": ["L"]
 }
 
 
@@ -423,6 +427,8 @@ class MiscritsBot:
             print("[RESULT] Capture successful!")
             captured = self.capture_or_release(crit_tier, found)
             time.sleep(1)
+            if not captured:
+                time.sleep(0.2)
         else:
             print("[RESULT] Capture failed.")
 
