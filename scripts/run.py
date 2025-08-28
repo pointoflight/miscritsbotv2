@@ -8,11 +8,11 @@ logger = setup_logger()
 
 notifier = Notifier(num_notifs=30)
 
-bot = MiscritsBot(search_crit="l_tectonyx",
-                  trainer_crit="grav",
-                  heal=True,
+bot = MiscritsBot(search_crit="smolderfry",
+                  trainer_crit="papa",
+                  heal=False,
                   plat_training=False,
-                  capture_tiers=["S+", "A", "A+", "B+"],
+                  capture_tiers=["S+", "S", "A", "A+", "B+"],
                   move_page=1,
                   plat_capture_attempts=0,
                   notifier=notifier,

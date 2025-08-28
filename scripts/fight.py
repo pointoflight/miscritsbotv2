@@ -58,9 +58,11 @@ offset_coords = {
     "hoopty": (150, -50),
     "f_vexie": (-100, 230),
     "f_luna": (-190, 260),
-    "keeper": (250, 250),
+    "keeper": (170, -210),
     "babakku": (-200, 0),
-    "l_tectonyx": (300, -50)
+    "l_tectonyx": (300, -50),
+    "f_kiloray": (-130, 200),
+    "d_snortus": (-170, 300)
 }
 
 name_searches = {
@@ -116,9 +118,11 @@ name_searches = {
     "hoopty": ["Ho"],
     "f_vexie": ["Fo"],
     "f_luna": ["Fo"],
-    "keeper": ["K"],
+    "keeper": ["K", "per"],
     "babakku": ["Ba"],
-    "l_tectonyx": ["L"]
+    "l_tectonyx": ["L"],
+    "f_kiloray": ["Fo"],
+    "d_snortus": ["S", "ort", "us"]
 }
 
 
@@ -391,7 +395,7 @@ class MiscritsBot:
              and capture_attempts == 0
              and not found)
             or
-            (found and capture_chance >= 55
+            (found and capture_chance >= 60
              and capture_attempts - 1 < self.plat_capture_attempts)
         )
 
@@ -428,7 +432,8 @@ class MiscritsBot:
             captured = self.capture_or_release(crit_tier, found)
             time.sleep(1)
             if not captured:
-                time.sleep(0.2)
+                print("! sleeping after releasing crit !")
+                time.sleep(1.4)
         else:
             print("[RESULT] Capture failed.")
 

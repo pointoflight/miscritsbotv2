@@ -69,12 +69,12 @@ import random
 
 # print("len(green_matches):", len(green_matches))
 
-loc = HumanMouse.locate_on_screen("photos/fight/l_tectonyx/ref.png")
-if loc:
-    loc = (loc[0] + 300 + random.randint(-2, 2), loc[1] + -50 + random.randint(-2, 2))
-    HumanMouse.move_to(loc) # random.randint(0, 10), random.randint(-10, 0))
-else:
-    print("not found")
+# loc = HumanMouse.locate_on_screen("photos/fight/keeper/ref.png")
+# if loc:
+#     loc = (loc[0] + 170 + random.randint(-2, 2), loc[1] + -210 + random.randint(-2, 2))
+#     HumanMouse.move_to(loc) # random.randint(0, 10), random.randint(-10, 0))
+# else:
+#     print("not found")
 
 # HumanMouse.move_to((0, 0))
 # red_matches = HumanMouse.locate_all_on_screen("photos/fight/common/red.png", 
@@ -136,3 +136,22 @@ else:
 # print(f"Always Guess '1' Wins: {random_strategy_wins}")
 # print(f"Always Guess '1' Win Rate: {random_strategy_wins / streak_strategy_guesses * 100:.2f}%")
 
+import random
+
+def simulate_until_success(p):
+    tries = 0
+    while True:
+        tries += 1
+        if random.random() < p:  # success with probability p
+            return tries
+
+# Example usage
+# p = 0.0024  # probability of success
+# num_tries = simulate_until_success(p)
+# print(f"Success after {num_tries} tries")
+
+N = 10000
+p = 0.0024
+results = [simulate_until_success(p) for _ in range(N)]
+
+print(f"Average tries: {sum(results)/N:.2f}")

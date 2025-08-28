@@ -80,4 +80,4 @@ class BreedHelper:
 
 
 bh = BreedHelper()
-bh.main(["ew", "pw", "ed"])
+bh.main(["ew", "pw", "pd"])
