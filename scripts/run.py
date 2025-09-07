@@ -6,9 +6,9 @@ from logger import setup_logger
 
 logger = setup_logger()
 
-notifier = Notifier(num_notifs=30)
+notifier = Notifier(num_notifs=10)
 
-bot = MiscritsBot(search_crit="smolderfry",
+bot = MiscritsBot(search_crit="manio",
                   trainer_crit="papa",
                   heal=False,
                   plat_training=False,

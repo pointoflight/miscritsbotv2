@@ -62,7 +62,8 @@ offset_coords = {
     "babakku": (-200, 0),
     "l_tectonyx": (300, -50),
     "f_kiloray": (-130, 200),
-    "d_snortus": (-170, 300)
+    "d_snortus": (-170, 300),
+    "l_nibbles": (-100, 100)
 }
 
 name_searches = {
@@ -122,7 +123,8 @@ name_searches = {
     "babakku": ["Ba"],
     "l_tectonyx": ["L"],
     "f_kiloray": ["Fo"],
-    "d_snortus": ["S", "ort", "us"]
+    "d_snortus": ["S", "ort", "us"],
+    "l_nibbles": ["L", "ht"]
 }
 
 
