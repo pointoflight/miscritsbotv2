@@ -3,6 +3,22 @@ from human_mouse import HumanMouse
 import pyautogui
 
 class BreedHelper:
+    def look_for_target_until_found(self, target_path: str, confidence: float = 0.8):
+        """Continuously searches for a target on screen until found or timeout triggers."""
+        count = 0
+
+        while count < 500:
+            target = HumanMouse.locate_on_screen(target_path, confidence)
+            if target:
+                print(f"[SEARCH] {target_path} found!")
+                return target
+
+            # print(f"[SEARCH] {target_path} not found.")
+            time.sleep(0.01)
+            count += 1
+
+        return None
+
     def main(self, stats):
         while True:
             brash = HumanMouse.locate_on_screen("photos/breed/brash.png")
@@ -52,13 +68,18 @@ class BreedHelper:
             yes = HumanMouse.locate_on_screen("photos/breed/yes.png")
             HumanMouse.move_to(yes, 0, 0)
             HumanMouse.click()
-            time.sleep(1.2)
+            time.sleep(1.0)
 
-            green_matches = HumanMouse.locate_all_on_screen(
-                "photos/breed/green.png",
-                min_distance=15,
-                confidence=0.85
-            )
+            breed_result = self.look_for_target_until_found("photos/breed/green.png")
+
+            if breed_result:
+                green_matches = HumanMouse.locate_all_on_screen(
+                    "photos/breed/green.png",
+                    min_distance=15,
+                    confidence=0.85
+                )
+            else:
+                break
 
             print("len(green_matches):", len(green_matches))
 
@@ -80,4 +101,4 @@ class BreedHelper:
 
 
 bh = BreedHelper()
-bh.main(["ew", "pw", "pd"])
+bh.main(["ew", "hp", "ed"])

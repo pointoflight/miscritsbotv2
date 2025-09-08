@@ -155,3 +155,8 @@ else:
 # results = [simulate_until_success(p) for _ in range(N)]
 
 # print(f"Average tries: {sum(results)/N:.2f}")
+# hp - 1.5
+# ew - 5.2
+# pw - 2.1
+# pd - 3.2
+# ed - 1.1

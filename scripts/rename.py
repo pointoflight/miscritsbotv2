@@ -132,10 +132,16 @@ class Rename:
     def main(self):
 
         while True:
+            renamed_one = False
             crits = self.find_all_crits()
             for crit in crits:
                 out = self.rename(crit)
+                if out:
+                    renamed_one = True
                 print("RENAME:", out)
+
+            if not renamed_one:
+                break
 
             down = HumanMouse.locate_on_screen(
                 "photos/rename/down.png", confidence=0.9)
