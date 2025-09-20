@@ -694,8 +694,8 @@ class MiscritsBot:
                     print("[QUEST] Confirmed success (clicked OK)")
 
             # --- Remove captured crit from team (not needed when team is full - 4 crits) ---
-            # if captured:
-            #     self.remove_crit_from_team()
+            if captured:
+                self.remove_crit_from_team()
 
             # --- Training check ---
             if is_ready_to_train:
