@@ -154,15 +154,7 @@ class MiscritsBot:
 
     def _fight_loop(self):
         """Main fight loop handling turns, capture, and attacks."""
-        capture_attempts = 0
-        captured = False
-        crit_name = "--"
-        capture_chance = "0"
-        crit_tier = "N"
-        found = False
-        page = 1
-        crit_hp = "0"
-
+        healed = False
         while True:
             turn_status = self.look_for_fight_over_or_not(
                 self.my_turn,
@@ -170,23 +162,15 @@ class MiscritsBot:
             )
 
             if turn_status == 'my_turn':
-                crit_hp = self._gather_crit_info()
-
-                self._log_fight_status(
-                    crit_tier, crit_name, found,
-                    capture_chance, capture_attempts, crit_hp
-                )
-
-                self._perform_attack(crit_hp)
+                if self.heal and self.tries % 40 == 39 and not healed:
+                    self.use_magical_heal() #TODO: handle case where no magical heals
+                    healed = True
+                    time.sleep(1.5)
+                else:
+                    self._perform_attack()
             else:
-                return self._finalize_fight(captured)
+                return self._finalize_fight()
 
-    def _gather_crit_info(self):
-        """Fetches crit name, capture chance, tier, and notifies if found."""
-        crit_name, capture_chance, crit_hp, crit_tier = \
-            self.fight_info.get_capture_chance_crit_name_tier(name=False, chance=False, hp=True, tier=False)
-
-        return crit_hp
 
     def _log_fight_status(self, crit_tier, crit_name, found,
                           capture_chance, capture_attempts, crit_hp) -> None:
@@ -229,24 +213,20 @@ class MiscritsBot:
             HumanMouse.move_to(abilities_move, 0, 0)
             HumanMouse.click()
 
-    def _perform_attack(self, crit_hp) -> None:
+    def _perform_attack(self) -> None:
         """Executes an attack move if capture is not attempted."""
 
-        if self.heal and int(crit_hp) < 100:
-            self.use_magical_heal() #TODO: handle case where no magical heals
-            time.sleep(1.5)
-        else:
-            attack_image = f"photos/fight/common/{self.trainer_crit}_attack.png"
-            attack_move = self.look_for_target_until_found(attack_image)
+        attack_image = f"photos/fight/common/{self.trainer_crit}_attack.png"
+        attack_move = self.look_for_target_until_found(attack_image)
 
-            print("[ACTION] Attacking instead of capturing.")
+        print("[ACTION] Attacking instead of capturing.")
 
-            HumanMouse.move_to(attack_move, 0, 0)
-            HumanMouse.click()
-            HumanMouse.move_to(attack_move, 0, -200)
-            time.sleep(2)
+        HumanMouse.move_to(attack_move, 0, 0)
+        HumanMouse.click()
+        HumanMouse.move_to(attack_move, 0, -200)
+        time.sleep(2)
 
-    def _finalize_fight(self, captured: bool):
+    def _finalize_fight(self):
         """Handles cleanup when the fight is over."""
         fight_continue = self.look_for_target_until_found(
             "photos/fight/common/fight_continue.png"
@@ -255,7 +235,7 @@ class MiscritsBot:
 
         if HumanMouse.locate_on_screen("photos/fight/common/pumpkin.png"):
             self.pumpkins += 1
-            
+
         print("[END] Fight complete.")
 
         HumanMouse.move_to(fight_continue, 0, 0)
