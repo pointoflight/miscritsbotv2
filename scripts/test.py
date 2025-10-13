@@ -163,3 +163,15 @@ else:
 # pw - 2.1
 # pd - 3.2
 # ed - 1.1
+import ctypes
+
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+
+if is_admin():
+    print("Script has admin privileges ✅")
+else:
+    print("Script does NOT have admin privileges ❌")

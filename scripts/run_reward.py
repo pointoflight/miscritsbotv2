@@ -1,4 +1,4 @@
-from fight import MiscritsBot
+from reward import MiscritsBot
 from notifier import Notifier
 from human_mouse import HumanMouse
 from fight_info import FightInfo
@@ -10,7 +10,7 @@ notifier = Notifier(num_notifs=1)
 
 bot = MiscritsBot(search_crit="woolly",
                   trainer_crit="l_zaptor",
-                  heal=False,
+                  heal=True,
                   plat_training=False,
                   capture_tiers=[],
                   move_page=1,

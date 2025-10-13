@@ -393,7 +393,7 @@ class MiscritsBot:
 
         return (
             (crit_tier in self.capture_tiers
-             and capture_chance >= 80
+             and capture_chance >= 60
              and capture_attempts == 0
              and not found)
             or

@@ -1,5 +1,5 @@
 import time
-
+import os
 from human_mouse import HumanMouse
 
 class Helper:
@@ -122,12 +122,13 @@ class BattleArena:
         HumanMouse.click()
         time.sleep(3)
         HumanMouse.click()
+        time.sleep(1)
 
     def heal(self):
         master = Helper.look_for_target_until_found("photos/ba/heal_master.png")
         HumanMouse.move_to(master, 0, 0)
         HumanMouse.click()
-        time.sleep(3)
+        time.sleep(4)
 
         heal = Helper.look_for_target_until_found("photos/ba/heal_crits.png")
         HumanMouse.move_to(heal, 0, 0)
@@ -141,8 +142,8 @@ class BattleArena:
 
     def main(self):
         self.go_home()
-
-        while True:
+        c = 0
+        while c < 25:
             self.go_to_arena()
             self.start_match()
             self.play_match()
@@ -150,7 +151,10 @@ class BattleArena:
             self.go_to_heal()
             self.heal()
             self.go_home()
+            c += 1
+            print(c, "trials done")
 
 ba = BattleArena()
 ba.main()
+# os.system("shutdown /s /f /t 0")
 # ba.finish_match()
