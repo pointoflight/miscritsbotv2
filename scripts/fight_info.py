@@ -106,7 +106,7 @@ class FightInfo:
                 if not crit_hp:
                     crit_hp = "0"
 
-            return ''.join(critter_name.split()), capture_chance, crit_hp, crit_tier
+            return ''.join(critter_name.split()), capture_chance, "".join(crit_hp.split()), crit_tier
 
         print("not found capture!")
         return ''.join(critter_name.split()), capture_chance, crit_hp, crit_tier

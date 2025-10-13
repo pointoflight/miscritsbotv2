@@ -6,11 +6,7 @@ from notifier import Notifier
 from fight_info import FightInfo
 
 offset_coords = {
-    "woolly": (-460, 380)
-}
-
-name_searches = {
-    "woolly": ["W"]
+    0: (-120, -200), 1:(-110, 50)
 }
 
 
@@ -25,21 +21,17 @@ class MiscritsBot:
         self.fight_background = "photos/fight/" + search_crit + "/fight_background.png"
         self.crit_ref = "photos/fight/" + search_crit + "/ref.png"
         self.my_turn = "photos/fight/" + search_crit + "/my_turn.png"
-        self.search_loc_x_off = offset_coords[search_crit][0]
-        self.search_loc_y_off = offset_coords[search_crit][1]
+        # self.search_loc_x_off = offset_coords[search_crit][0]
+        # self.search_loc_y_off = offset_coords[search_crit][1]
         self.plat_training = plat_training
         self.plat_capture_attempts = plat_capture_attempts
         self.fight_info = FightInfo()
-        self.rs_captured = 0
-        self.abprs_captured = 0
-        self.sp_captured = 0
-        self.scrits_captured = 0
-        self.ap_reds = 0
-        self.levels_up = 0
         self.tries = 0
         self.capture_tiers = capture_tiers
         self.heal = heal
         self.move_page = move_page
+        self.timer = {0: 0, 1: 0}
+        self.alternate = 1
 
     def look_for_target_until_found(self, target_path: str, confidence: float = 0.8):
         """Continuously searches for a target on screen until found or timeout triggers."""
@@ -105,21 +97,10 @@ class MiscritsBot:
             print("[CHECK] No fight/potion indicators found...")
             time.sleep(0.01)
 
-    def ready_to_train(self, image_path: str, confidence: float = 0.8) -> bool:
-        """Checks if crit is ready to train."""
-        is_ready = HumanMouse.locate_on_screen(image_path, confidence)
-
-        if is_ready:
-            print("[TRAIN] Ready to train!")
-            return True
-
-        print("[TRAIN] Not ready to train.")
-        return False
-
-    def fight_on_location(self, image_path):
+    def fight_on_location(self):
         """Initiates a fight at the given location on screen."""
 
-        target_location = self.look_for_target_until_found(image_path)
+        target_location = self.look_for_target_until_found(self.crit_ref)
         if not target_location:
             return False, None
 
@@ -135,7 +116,7 @@ class MiscritsBot:
         )
 
         if outcome == "potion":
-            time.sleep(17)
+            # time.sleep(15)
             return False, None
 
         self.tries += 1
@@ -147,8 +128,8 @@ class MiscritsBot:
 
     def _move_to_target_with_offset(self, location: tuple[int, int]) -> None:
         """Moves mouse to target location with random offsets."""
-        x_offset = self.search_loc_x_off + random.randint(-2, 2)
-        y_offset = self.search_loc_y_off + random.randint(-2, 2)
+        x_offset = offset_coords[self.alternate][0] + random.randint(-2, 2)
+        y_offset = offset_coords[self.alternate][1] + random.randint(-2, 2)
         adjusted_location = (location[0] + x_offset, location[1] + y_offset)
 
         HumanMouse.move_to(
@@ -159,14 +140,14 @@ class MiscritsBot:
 
     def _initiate_fight(self) -> bool:
         """Clicks on 'search for miscrit' if available to start the fight."""
-        search_button = self.look_for_target_until_found(
-            "photos/fight/common/search_for_miscrit.png"
-        )
-        if not search_button:
-            return False
+        elapsed_time = time.time() - self.timer[self.alternate]
 
-        time.sleep(0.05)
+        if elapsed_time < 25:
+            print("[SLEEP] Waiting for",25 - elapsed_time,"seconds to start fight!")
+            time.sleep(25 - elapsed_time)
+
         HumanMouse.click()
+        self.timer[self.alternate] = time.time()
         time.sleep(1.5)
         return True
 
@@ -278,11 +259,11 @@ class MiscritsBot:
 
         return
 
-
     def main_loop(self):
         while True:
-            self.fight_on_location(self.crit_ref)
-            time.sleep(1)  # TODO: Remove? Not needed after update? Wait between click continue and see if captured congrats.
+            self.alternate = 1 - self.alternate
+            self.fight_on_location()
+            time.sleep(0.5)  # TODO: Remove? Not needed after update? Wait between click continue and see if captured congrats.
 
             print("[MAIN] Fight finished (line 300)")
 

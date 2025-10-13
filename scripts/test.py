@@ -7,10 +7,10 @@ import time
 import random
 
 
-# fight_info = FightInfo()
+fight_info = FightInfo()
 
-# crit_hp = fight_info.get_capture_chance_and_crit_name(name=False, chance=False)
-# print(crit_hp)
+_, _, crit_hp, _ = fight_info.get_capture_chance_crit_name_tier(name=False, chance=False, hp=True, tier=False)
+print(crit_hp)
 # Example: get tier
 # tier = fight_info.get_tier()
 # print("Tier:", tier)
@@ -69,12 +69,12 @@ import random
 
 # print("len(green_matches):", len(green_matches))
 
-loc = HumanMouse.locate_on_screen("photos/ba/home.png")
-if loc:
-    loc = (loc[0] + 320 + random.randint(-2, 2), loc[1] + 20 + random.randint(-2, 2))
-    HumanMouse.move_to(loc) # random.randint(0, 10), random.randint(-10, 0))
-else:
-    print("not found")
+# loc = HumanMouse.locate_on_screen("photos/fight/reward/ref.png")
+# if loc:
+#     loc = (loc[0] - 110 + random.randint(-2, 2), loc[1] + 50 + random.randint(-2, 2))
+#     HumanMouse.move_to(loc) # random.randint(0, 10), random.randint(-10, 0))
+# else:
+#     print("not found")
 
 # -100, 70 first move
 # 300, 70 third move
@@ -163,15 +163,15 @@ else:
 # pw - 2.1
 # pd - 3.2
 # ed - 1.1
-import ctypes
+# import ctypes
 
-def is_admin():
-    try:
-        return ctypes.windll.shell32.IsUserAnAdmin()
-    except:
-        return False
+# def is_admin():
+#     try:
+#         return ctypes.windll.shell32.IsUserAnAdmin()
+#     except:
+#         return False
 
-if is_admin():
-    print("Script has admin privileges ✅")
-else:
-    print("Script does NOT have admin privileges ❌")
+# if is_admin():
+#     print("Script has admin privileges ✅")
+# else:
+#     print("Script does NOT have admin privileges ❌")

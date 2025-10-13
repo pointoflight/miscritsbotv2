@@ -8,7 +8,7 @@ logger = setup_logger()
 
 notifier = Notifier(num_notifs=1)
 
-bot = MiscritsBot(search_crit="woolly",
+bot = MiscritsBot(search_crit="reward",
                   trainer_crit="l_zaptor",
                   heal=True,
                   plat_training=False,
