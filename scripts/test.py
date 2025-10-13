@@ -9,8 +9,8 @@ import random
 
 fight_info = FightInfo()
 
-_, _, crit_hp, _ = fight_info.get_capture_chance_crit_name_tier(name=False, chance=False, hp=True, tier=False)
-print(crit_hp)
+# _, _, crit_hp, _ = fight_info.get_capture_chance_crit_name_tier(name=False, chance=False, hp=True, tier=False)
+# print(crit_hp)
 # Example: get tier
 # tier = fight_info.get_tier()
 # print("Tier:", tier)
@@ -69,12 +69,12 @@ print(crit_hp)
 
 # print("len(green_matches):", len(green_matches))
 
-# loc = HumanMouse.locate_on_screen("photos/fight/reward/ref.png")
-# if loc:
-#     loc = (loc[0] - 110 + random.randint(-2, 2), loc[1] + 50 + random.randint(-2, 2))
-#     HumanMouse.move_to(loc) # random.randint(0, 10), random.randint(-10, 0))
-# else:
-#     print("not found")
+loc = HumanMouse.locate_on_screen("photos/fight/common/magical_heal.png")
+if loc:
+    loc = (loc[0] - 0 + random.randint(-2, 2), loc[1] + 0 + random.randint(-2, 2))
+    HumanMouse.move_to(loc) # random.randint(0, 10), random.randint(-10, 0))
+else:
+    print("not found")
 
 # -100, 70 first move
 # 300, 70 third move

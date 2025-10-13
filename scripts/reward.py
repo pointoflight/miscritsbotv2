@@ -27,6 +27,7 @@ class MiscritsBot:
         self.plat_capture_attempts = plat_capture_attempts
         self.fight_info = FightInfo()
         self.tries = 0
+        self.pumpkins = 0
         self.capture_tiers = capture_tiers
         self.heal = heal
         self.move_page = move_page
@@ -252,6 +253,9 @@ class MiscritsBot:
         )
         time.sleep(0.5)  # necessary delay for UI
 
+        if HumanMouse.locate_on_screen("photos/fight/common/pumpkin.png"):
+            self.pumpkins += 1
+            
         print("[END] Fight complete.")
 
         HumanMouse.move_to(fight_continue, 0, 0)
@@ -292,7 +296,8 @@ class MiscritsBot:
 
             # --- Progress summary ---
             self.logger.info(
-                f"Tries: {self.tries}"
+                f"Tries: {self.tries} | "
+                f"Pumpkins: {self.pumpkins}"
             )
 
             HumanMouse.move_to((0, 0))
