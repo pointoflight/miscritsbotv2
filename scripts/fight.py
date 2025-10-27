@@ -63,7 +63,10 @@ offset_coords = {
     "l_tectonyx": (300, -50),
     "f_kiloray": (-130, 200),
     "d_snortus": (-170, 300),
-    "l_nibbles": (-100, 100)
+    "l_nibbles": (-100, 100),
+    "da_windy": (170, 70),
+    "geneseed": (-200, 230),
+    "v_skustunk": (-200, 230)
 }
 
 name_searches = {
@@ -124,7 +127,10 @@ name_searches = {
     "l_tectonyx": ["L"],
     "f_kiloray": ["Fo"],
     "d_snortus": ["S", "ort", "us"],
-    "l_nibbles": ["L", "ht"]
+    "l_nibbles": ["L", "ht"],
+    "da_windy": ["W", "ndy"],
+    "geneseed": ["Ge", "ed"],
+    "v_skustunk": ["V", "S"]
 }
 
 
@@ -393,11 +399,11 @@ class MiscritsBot:
 
         return (
             (crit_tier in self.capture_tiers
-             and capture_chance >= 60
+             and 80 <= capture_chance <= 100
              and capture_attempts == 0
              and not found)
             or
-            (found and capture_chance >= 60
+            (found and 60 <= capture_chance <= 100
              and capture_attempts - 1 < self.plat_capture_attempts)
         )
 
@@ -694,8 +700,8 @@ class MiscritsBot:
                     print("[QUEST] Confirmed success (clicked OK)")
 
             # --- Remove captured crit from team (not needed when team is full - 4 crits) ---
-            if captured:
-                self.remove_crit_from_team()
+            # if captured:
+            #     self.remove_crit_from_team()
 
             # --- Training check ---
             if is_ready_to_train:

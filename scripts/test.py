@@ -7,7 +7,7 @@ import time
 import random
 
 
-fight_info = FightInfo()
+# fight_info = FightInfo()
 
 # _, _, crit_hp, _ = fight_info.get_capture_chance_crit_name_tier(name=False, chance=False, hp=True, tier=False)
 # print(crit_hp)
@@ -69,9 +69,10 @@ fight_info = FightInfo()
 
 # print("len(green_matches):", len(green_matches))
 
-loc = HumanMouse.locate_on_screen("photos/fight/common/magical_heal.png")
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+loc = HumanMouse.locate_on_screen("photos/fight/common/ready_to_train.png")
 if loc:
-    loc = (loc[0] - 0 + random.randint(-2, 2), loc[1] + 0 + random.randint(-2, 2))
+    loc = (loc[0] + -0 + random.randint(-2, 2), loc[1] + 0 + random.randint(-2, 2))
     HumanMouse.move_to(loc) # random.randint(0, 10), random.randint(-10, 0))
 else:
     print("not found")
@@ -80,9 +81,12 @@ else:
 # 300, 70 third move
 # 100, 70 second move
 # HumanMouse.move_to((0, 0))
-# red_matches = HumanMouse.locate_all_on_screen("photos/fight/common/red.png", 
-#                                                         min_distance=30, confidence=0.8)
-# print("!! len(red_matches):", len(red_matches))
+red_matches = HumanMouse.locate_all_on_screen("photos/fight/common/ready_to_train.png", 
+                                                        min_distance=10, confidence=0.8)
+print("!!!! len(red_matches):", len(red_matches))
+for train_crit in red_matches:
+    HumanMouse.move_to(train_crit)
+    time.sleep(0.5)
 # import random
 
 # # Parameters
@@ -175,3 +179,4 @@ else:
 #     print("Script has admin privileges ✅")
 # else:
 #     print("Script does NOT have admin privileges ❌")
+# 

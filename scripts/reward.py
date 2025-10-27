@@ -1,5 +1,6 @@
 import time
 import random
+import pyautogui
 
 from human_mouse import HumanMouse
 from notifier import Notifier
@@ -243,6 +244,35 @@ class MiscritsBot:
 
         return
 
+    def buy_plats(self):
+        pumpkin_event = HumanMouse.locate_on_screen("photos/fight/common/pumpkin_event.png")
+        if pumpkin_event:
+            HumanMouse.move_to(pumpkin_event, 0, 0)
+            HumanMouse.click()
+            time.sleep(4)
+
+            pumpkin_plat = HumanMouse.locate_on_screen("photos/fight/common/pumpkin_plat.png")
+            if pumpkin_plat:
+                HumanMouse.move_to(pumpkin_plat, 50, 50)
+                HumanMouse.click()
+                time.sleep(1)
+
+                pumpkin_buy = HumanMouse.locate_on_screen("photos/fight/common/pumpkin_buy.png")
+                if pumpkin_buy:
+                    HumanMouse.move_to(pumpkin_buy, 50, -130)
+                    HumanMouse.click()
+                    pyautogui.typewrite("116", interval=0.05)
+                    time.sleep(0.5)
+                    HumanMouse.move_to(pumpkin_buy, 0, 0)
+                    HumanMouse.click()
+                    time.sleep(5)
+                    
+                    pumpkin_cross = HumanMouse.locate_on_screen("photos/fight/common/pumpkin_cross.png")
+                    if pumpkin_cross:
+                        HumanMouse.move_to(pumpkin_cross, 0, 0)
+                        HumanMouse.click()
+                        time.sleep(2)
+
     def main_loop(self):
         while True:
             self.alternate = 1 - self.alternate
@@ -279,5 +309,9 @@ class MiscritsBot:
                 f"Tries: {self.tries} | "
                 f"Pumpkins: {self.pumpkins}"
             )
+
+            if self.pumpkins >= 348:
+                self.buy_plats()
+                self.pumpkins = 0
 
             HumanMouse.move_to((0, 0))

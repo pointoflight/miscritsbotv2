@@ -6,13 +6,13 @@ from logger import setup_logger
 
 logger = setup_logger()
 
-notifier = Notifier(num_notifs=1)
+notifier = Notifier(num_notifs=10)
 
-bot = MiscritsBot(search_crit="woolly",
-                  trainer_crit="l_zaptor",
+bot = MiscritsBot(search_crit="geneseed",
+                  trainer_crit="papa",
                   heal=False,
                   plat_training=False,
-                  capture_tiers=[],
+                  capture_tiers=["S+", "A+", "A", "B+"],
                   move_page=1,
                   plat_capture_attempts=0,
                   notifier=notifier,
