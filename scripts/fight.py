@@ -66,7 +66,8 @@ offset_coords = {
     "l_nibbles": (-100, 100),
     "da_windy": (170, 70),
     "geneseed": (-200, 230),
-    "v_skustunk": (-200, 230)
+    "v_skustunk": (-200, 230),
+    "hekatom": (150, 280)
 }
 
 name_searches = {
@@ -130,7 +131,8 @@ name_searches = {
     "l_nibbles": ["L", "ht"],
     "da_windy": ["W", "ndy"],
     "geneseed": ["Ge", "ed"],
-    "v_skustunk": ["V", "S"]
+    "v_skustunk": ["V", "S"],
+    "hekatom": ["H", "to"]
 }
 
 

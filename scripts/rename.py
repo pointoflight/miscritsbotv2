@@ -73,7 +73,7 @@ class Rename:
 
     def find_images(self):
         screenshot = pyautogui.screenshot(region=self.region)
-
+        # screenshot.show()
         found_images = []
         found_count = 0
 
@@ -97,6 +97,7 @@ class Rename:
         HumanMouse.click()
         time.sleep(0.05) # TODO: optimize
         count, stats = self.find_images()
+        print(count, stats)
         if count != 1:
             return False
         settings = HumanMouse.locate_on_screen("photos/rename/settings.png")
@@ -105,7 +106,7 @@ class Rename:
         time.sleep(0.05)
 
         rename_crit = HumanMouse.locate_on_screen(
-            "photos/rename/rename_crit.png", confidence=0.99)
+            "photos/rename/rename_crit.png", confidence=0.9)
         HumanMouse.move_to(rename_crit)
         HumanMouse.click()
         time.sleep(0.1)
@@ -122,7 +123,7 @@ class Rename:
         pyautogui.typewrite(stats[0], interval=0.05)
 
         save = HumanMouse.locate_on_screen(
-            "photos/rename/save.png", confidence=0.9)
+            "photos/rename/save.png", confidence=0.8)
         HumanMouse.move_to(save)
         HumanMouse.click()
         time.sleep(1.3)
@@ -177,6 +178,13 @@ image_list = [
 
 rename = Rename(image_list)
 rename.main()
+
+# screenshot = pyautogui.screenshot(region=(945, 645, 90, 170))
+
+# if pyautogui.locate("photos/rename/wpd7.png", screenshot, confidence=0.9):
+#     print("YES")
+# else:
+#     print("NO")
 # crits = rename.find_all_crits()
 # for crit in crits:
 #     HumanMouse.move_to(crit)

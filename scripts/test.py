@@ -70,23 +70,30 @@ import random
 # print("len(green_matches):", len(green_matches))
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-loc = HumanMouse.locate_on_screen("photos/fight/common/ready_to_train.png")
+loc = HumanMouse.locate_on_screen("photos/fight/hekatom/ref.png", confidence=0.8)
 if loc:
-    loc = (loc[0] + -0 + random.randint(-2, 2), loc[1] + 0 + random.randint(-2, 2))
+    loc = (loc[0] + 150 + random.randint(-2, 2), loc[1] + 280 + random.randint(-2, 2))
     HumanMouse.move_to(loc) # random.randint(0, 10), random.randint(-10, 0))
 else:
     print("not found")
 
+# screenshot = pyautogui.screenshot(region=(945, 645, 90, 170))
+
+# if pyautogui.locate("photos/rename/wpd7.png", screenshot, confidence=0.9):
+#     print("YES")
+# else:
+#     print("NO")
+# screenshot.show() 
 # -100, 70 first move
 # 300, 70 third move
 # 100, 70 second move
 # HumanMouse.move_to((0, 0))
-red_matches = HumanMouse.locate_all_on_screen("photos/fight/common/ready_to_train.png", 
-                                                        min_distance=10, confidence=0.8)
-print("!!!! len(red_matches):", len(red_matches))
-for train_crit in red_matches:
-    HumanMouse.move_to(train_crit)
-    time.sleep(0.5)
+# red_matches = HumanMouse.locate_all_on_screen("photos/breed/pd.png", 
+#                                                         min_distance=20, confidence=0.95)
+# print("!!!! len(red_matches):", len(red_matches))
+# for train_crit in red_matches:
+#     HumanMouse.move_to(train_crit)
+#     time.sleep(0.5)
 # import random
 
 # # Parameters

@@ -101,4 +101,6 @@ class BreedHelper:
 
 
 bh = BreedHelper()
-bh.main(["ew", "hp", "ed"])
+bh.main(["ew", "ed", "pd"])
+
+# hp 1.1, ew 2.3, pw 2.1, ed -.2, pd 1.5
