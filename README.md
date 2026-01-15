@@ -1,2 +1,2 @@
-# miscritsbotv2
+# miscritsbotv2 👾
 bot after updated UI changes in game
