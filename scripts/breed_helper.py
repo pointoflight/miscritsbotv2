@@ -92,7 +92,7 @@ class BreedHelper:
                 release = HumanMouse.locate_on_screen("photos/breed/release.png")
                 HumanMouse.move_to(release, 0, 0)
                 HumanMouse.click()
-                time.sleep(0.1)
+                time.sleep(0.2)
                 release_yes = HumanMouse.locate_on_screen("photos/breed/release_yes.png")
                 HumanMouse.move_to(release_yes, 0, 0)
                 HumanMouse.click()
@@ -101,6 +101,6 @@ class BreedHelper:
 
 
 bh = BreedHelper()
-bh.main(["ew", "ed", "pd"])
+bh.main(["pw", "ed", "hp "])
 
-# hp 1.1, ew 2.3, pw 2.1, ed -.2, pd 1.5
+# hp 0.6, ew 0.8, pw 1.1, ed 0.7, pd 0.11

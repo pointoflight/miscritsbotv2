@@ -67,7 +67,9 @@ offset_coords = {
     "da_windy": (170, 70),
     "geneseed": (-200, 230),
     "v_skustunk": (-200, 230),
-    "hekatom": (150, 280)
+    "hekatom": (150, 280),
+    "g_kilo": (-50, 280),
+    "luvcraft": (-120, 200),
 }
 
 name_searches = {
@@ -132,7 +134,9 @@ name_searches = {
     "da_windy": ["W", "ndy"],
     "geneseed": ["Ge", "ed"],
     "v_skustunk": ["V", "S"],
-    "hekatom": ["H", "to"]
+    "hekatom": ["H", "to"],
+    "g_kilo": ["G", "K"],
+    "luvcraft": ["L", "uv"]
 }
 
 
@@ -486,14 +490,14 @@ class MiscritsBot:
             self.use_magical_heal() #TODO: handle case where no magical heals
             time.sleep(1.5)
         else:
-            attack_image = f"photos/fight/common/{self.trainer_crit}_attack.png"
+            attack_image = f"photos/fight/common/items.png"
             attack_move = self.look_for_target_until_found(attack_image)
 
             print("[ACTION] Attacking instead of capturing.")
 
-            HumanMouse.move_to(attack_move, 0, 0)
+            HumanMouse.move_to(attack_move, -50, 50)
             HumanMouse.click()
-            HumanMouse.move_to(attack_move, 0, -200)
+            HumanMouse.move_to(attack_move, 0, -250)
             time.sleep(2)
 
     def _finalize_fight(self, captured: bool):
